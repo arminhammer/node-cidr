@@ -1,0 +1,39 @@
+{
+  "name": "decidr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "time nyc --cache --reporter=lcov ava --verbose && nyc report"
+  },
+  "keywords": [
+    "calculator",
+    "cidr",
+    "ip",
+    "ipaddress",
+    "ipv6",
+    "mask",
+    "net",
+    "netmask",
+    "network",
+    "subnet"
+  ],
+  "author": "Armin Graf",
+  "license": "ISC",
+  "devDependencies": {
+    "ava": "^0.18.2",
+    "nyc": "^10.1.2"
+  },
+  "ava": {
+    "files": [
+      "test/*.js"
+    ],
+    "source": [
+      "**/*.{js,jsx}"
+    ],
+    "concurrency": 10,
+    "failFast": true,
+    "tap": false,
+    "powerAssert": false
+  }
+}
