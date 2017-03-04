@@ -10,6 +10,8 @@ ava('72.21.196.65', test => {
   test.is(ip.asCidr, '72.21.196.65/32');
   test.is(ip.asHex, '4815c441');
   test.is(ip.reverse, '65.196.21.72.in-addr.arpa');
+  test.is(ip.next.asString, '72.21.196.66');
+  test.is(ip.prev.asString, '72.21.196.64');
 });
 
 ava('1209386049', test => {
@@ -32,25 +34,38 @@ ava('10.0.255.255', test => {
   test.is(ip.asBinary, '00001010.00000000.11111111.11111111');
 });
 
-ava('10.0.0.0/16', test => {
-  let cidr = new Cidr('10.0.0.0/16');
+ava('10.1.0.0/16', test => {
+  let cidr = new Cidr('10.1.0.0/16');
   test.is(cidr.subnets('/16').length, 1);
   test.is(cidr.subnets('/18').length, 4);
   test.is(cidr.subnets('/24').length, 256);
   test.is(cidr.subnets('/30').length, 16384);
   test.is(cidr.count, 65536);
   test.is(cidr.netmask, '255.255.0.0');
-  test.deepEqual(cidr.max, new IPv4('10.0.255.255'));
-  test.deepEqual(cidr.range, [new IPv4('10.0.0.0'), new IPv4('10.0.255.255')]);
+  test.deepEqual(cidr.gateway, new IPv4('10.1.0.0'));
+  test.deepEqual(cidr.max, new IPv4('10.1.255.254'));
+  test.is(cidr.includes(new IPv4('10.1.120.1')), true);
+  test.is(cidr.includes(new IPv4('192.168.0.5')), false);
+  test.deepEqual(cidr.broadcast, new IPv4('10.1.255.255'));
+  test.deepEqual(cidr.range, [new IPv4('10.1.0.1'), new IPv4('10.1.255.254')]);
+  test.deepEqual(cidr.prev, new Cidr('10.0.0.0/16'));
+  test.deepEqual(cidr.next, new Cidr('10.2.0.0/16'));
+  test.deepEqual(cidr.next.next, new Cidr('10.3.0.0/16'));
 });
 
-ava('10.0.0.0/17', test => {
-  let cidr = new Cidr('10.0.0.0/17');
+ava('10.1.0.0/17', test => {
+  let cidr = new Cidr('10.1.0.0/17');
   test.is(cidr.subnets('/18').length, 2);
   test.is(cidr.subnets('/24').length, 128);
   test.is(cidr.subnets('/30').length, 8192);
   test.is(cidr.count, 32768);
   test.is(cidr.netmask, '255.255.128.0');
-  test.deepEqual(cidr.max, new IPv4('10.0.127.255'));
-  test.deepEqual(cidr.range, [new IPv4('10.0.0.0'), new IPv4('10.0.127.255')]);
+  test.is(cidr.includes(new IPv4('10.1.120.1')), true);
+  test.is(cidr.includes(new IPv4('192.168.0.5')), false);
+  test.deepEqual(cidr.gateway, new IPv4('10.1.0.0'));
+  test.deepEqual(cidr.max, new IPv4('10.1.127.254'));
+  test.deepEqual(cidr.broadcast, new IPv4('10.1.127.255'));
+  test.deepEqual(cidr.range, [new IPv4('10.1.0.1'), new IPv4('10.1.127.254')]);
+  test.deepEqual(cidr.prev, new Cidr('10.0.128.0/17'));
+  test.deepEqual(cidr.next, new Cidr('10.1.128.0/17'));
 });

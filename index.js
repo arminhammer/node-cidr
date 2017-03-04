@@ -69,12 +69,10 @@ let special_addr_tbl = {
   }
 };
 
-const octet_multiplier = [16777216, 65536, 256, 1];
-
 function octetsToInt(octets) {
   return octets.reduce(
     function(acc, curr, idx) {
-      return acc + curr * octet_multiplier[idx];
+      return acc + curr * Math.pow(2, (3 - idx) * 8);
     },
     0
   );
@@ -92,15 +90,13 @@ function stringToOctets(input) {
   return octets;
 }
 
-function intToOctets(input) {
-  return octet_multiplier.reduce(
-    function(arr, curr, idx) {
-      arr.octets[idx] = parseInt(arr.remainder / octet_multiplier[idx]);
-      arr.remainder = arr.remainder % octet_multiplier[idx];
-      return arr;
-    },
-    { octets: [], remainder: input }
-  ).octets;
+function intToOctets(input, limit) {
+  let octets = [];
+  for (let i = 0; i <= limit; i++) {
+    octets[i] = parseInt(input / Math.pow(2, (limit - i) * 8));
+    input = input % Math.pow(2, (limit - i) * 8);
+  }
+  return octets;
 }
 
 function padLeft(input, char, min) {
@@ -113,10 +109,11 @@ function padLeft(input, char, min) {
 class IPv4 {
   constructor(input) {
     this._octets = [];
+    this._count = 4;
     if (typeof input === 'string') {
       this._octets = stringToOctets(input);
     } else if (typeof input === 'number') {
-      this._octets = intToOctets(input);
+      this._octets = intToOctets(input, this._count - 1);
     }
     if (!this._octets) throw new Error('Not able to validate IP address.');
   }
@@ -154,6 +151,18 @@ class IPv4 {
   get countryCode() {
     //TODO
   }
+
+  get next() {
+    return new IPv4(this.asInt + 1);
+  }
+
+  get prev() {
+    return new IPv4(this.asInt - 1);
+  }
+
+  get reserved() {
+    //TODO
+  }
 }
 
 class Cidr {
@@ -164,12 +173,10 @@ class Cidr {
     //TODO: accept array of ips, generate the lowest common denominator CIDR
   }
 
-  //TODO: Add validation
-
   get max() {
     let initial = this._ip.asInt;
     let add = Math.pow(2, 32 - this._bitMask) - 1;
-    return new IPv4(initial + add);
+    return new IPv4(initial + add - 1);
   }
 
   get count() {
@@ -184,27 +191,20 @@ class Cidr {
       count--;
     }
     return new IPv4(result).asString;
-    /*
-    "netmask": {
-    "value": 4294901760,
-    "address": "255.255.0.0",
-    "binary": "11111111111111110000000000000000",
-    "hexadecimal": "FFFF0000"
-     },
-    */
   }
 
   get range() {
-    return [this._ip, this.max];
+    return [new IPv4(this._ip.asInt + 1), this.max];
   }
 
   get gateway() {
-  }
-
-  get usable() {
+    return this._ip;
   }
 
   get broadcast() {
+    let initial = this._ip.asInt;
+    let add = Math.pow(2, 32 - this._bitMask) - 1;
+    return new IPv4(initial + add);
   }
 
   subnets(input) {
@@ -236,40 +236,35 @@ class Cidr {
   }
 
   intersects(otherCidr) {
-  }
-
-  get size() {
+    //TODO test if cidr intersects this cidr
   }
 
   includes(ip) {
+    if (ip.asInt > this.gateway.asInt && ip.asInt < this.broadcast.asInt) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  merge() {
-    /*
-        cidrTools.merge(networks)
-        networks array: A list of IPv4 and IPv6 networks.
-        Returns: A promise that resolves to an array of merged networks.
-        cidrTools.merge(['1.0.0.0/24', '1.0.1.0/24']).then(r => {
-        console.log(r);
-        //=> ['1.0.0.0/23'] 
-        });
-    */
+  merge(cidrArray) {
+    // TODO merge cidrs into one combined CIDR, ['1.0.0.0/24', '1.0.1.0/24'] to ['1.0.0.0/23']
   }
 
-  // Increment an address (non-mutating)
-  increment() {
+  get next() {
+    return new Cidr(
+      new IPv4(this._ip.asInt + Math.pow(2, 32 - this._bitMask)).asString +
+        '/' +
+        this._bitMask
+    );
   }
 
-  // Decrement an address (non-mutating)
-  decrement() {
-  }
-
-  // Find the next adjacent subnet
-  nextSibling() {
-  }
-
-  // Find the previous adjacent subnet
-  prevSibling() {
+  get prev() {
+    return new Cidr(
+      new IPv4(this._ip.asInt - Math.pow(2, 32 - this._bitMask)).asString +
+        '/' +
+        this._bitMask
+    );
   }
 }
 
