@@ -1,7 +1,7 @@
 const ava = require('ava');
 
 const IPv4 = require('../index').IPv4;
-const Cidr = require('../index').Cidr;
+const Subnet = require('../index').Subnet;
 
 ava('72.21.196.65', test => {
   let ip = new IPv4('72.21.196.65');
@@ -35,10 +35,12 @@ ava('10.0.255.255', test => {
 });
 
 ava('10.1.0.0/16', test => {
-  let cidr = new Cidr('10.1.0.0/16');
+  let cidr = new Subnet('10.1.0.0/16');
   test.is(cidr.subnets('/16').length, 1);
   test.is(cidr.subnets('/18').length, 4);
+  test.is(cidr.subnets('/18', 2).length, 2);
   test.is(cidr.subnets('/24').length, 256);
+  test.is(cidr.subnets('/24', 2).length, 2);
   test.is(cidr.subnets('/30').length, 16384);
   test.is(cidr.count, 65536);
   test.is(cidr.netmask, '255.255.0.0');
@@ -48,16 +50,18 @@ ava('10.1.0.0/16', test => {
   test.is(cidr.includes(new IPv4('192.168.0.5')), false);
   test.deepEqual(cidr.broadcast, new IPv4('10.1.255.255'));
   test.deepEqual(cidr.range, [new IPv4('10.1.0.0'), new IPv4('10.1.255.255')]);
-  test.deepEqual(cidr.prev, new Cidr('10.0.0.0/16'));
-  test.deepEqual(cidr.next, new Cidr('10.2.0.0/16'));
-  test.deepEqual(cidr.next.next, new Cidr('10.3.0.0/16'));
+  test.deepEqual(cidr.prev, new Subnet('10.0.0.0/16'));
+  test.deepEqual(cidr.next, new Subnet('10.2.0.0/16'));
+  test.deepEqual(cidr.next.next, new Subnet('10.3.0.0/16'));
 });
 
 ava('10.1.0.0/17', test => {
-  let cidr = new Cidr('10.1.0.0/17');
+  let cidr = new Subnet('10.1.0.0/17');
   test.is(cidr.subnets('/18').length, 2);
   test.is(cidr.subnets('/24').length, 128);
+  test.is(cidr.subnets('/24', 2).length, 2);
   test.is(cidr.subnets('/30').length, 8192);
+  test.is(cidr.subnets('/30', 4).length, 4);
   test.is(cidr.count, 32768);
   test.is(cidr.netmask, '255.255.128.0');
   test.is(cidr.includes(new IPv4('10.1.120.1')), true);
@@ -66,12 +70,12 @@ ava('10.1.0.0/17', test => {
   test.deepEqual(cidr.max, new IPv4('10.1.127.255'));
   test.deepEqual(cidr.broadcast, new IPv4('10.1.127.255'));
   test.deepEqual(cidr.range, [new IPv4('10.1.0.0'), new IPv4('10.1.127.255')]);
-  test.deepEqual(cidr.prev, new Cidr('10.0.128.0/17'));
-  test.deepEqual(cidr.next, new Cidr('10.1.128.0/17'));
+  test.deepEqual(cidr.prev, new Subnet('10.0.128.0/17'));
+  test.deepEqual(cidr.next, new Subnet('10.1.128.0/17'));
 });
 
 ava('1.2.3.4/29', test => {
-  let cidr = new Cidr('1.2.3.4/29');
+  let cidr = new Subnet('1.2.3.4/29');
   //test.is(cidr.subnets('/18').length, 2);
   //test.is(cidr.subnets('/24').length, 128);
   //test.is(cidr.subnets('/30').length, 8192);
@@ -84,8 +88,8 @@ ava('1.2.3.4/29', test => {
   test.deepEqual(cidr.max, new IPv4('1.2.3.7'));
   test.deepEqual(cidr.broadcast, new IPv4('1.2.3.7'));
   test.deepEqual(cidr.range, [new IPv4('1.2.3.0'), new IPv4('1.2.3.7')]);
-  test.deepEqual(cidr.prev, new Cidr('1.2.2.248/29'));
-  test.deepEqual(cidr.next, new Cidr('1.2.3.8/29'));
+  test.deepEqual(cidr.prev, new Subnet('1.2.2.248/29'));
+  test.deepEqual(cidr.next, new Subnet('1.2.3.8/29'));
   test.deepEqual(cidr.ipList, [
     new IPv4('1.2.3.0'),
     new IPv4('1.2.3.1'),

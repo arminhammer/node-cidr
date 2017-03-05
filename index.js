@@ -42,7 +42,14 @@ function padLeft(input, char, min) {
   return input;
 }
 
+/**
+ * The IPv4 class represents an IPv4 address.
+ */
 class IPv4 {
+  /**
+   * The constructor expects a string in the format '192.168.0.1', or alternatively an integer.
+   * @param {String} input 
+   */
   constructor(input) {
     this._octets = [];
     this._count = 4;
@@ -54,24 +61,39 @@ class IPv4 {
     if (!this._octets) throw new Error('Not able to validate IP address.');
   }
 
+  /**
+   * Returns the string representation of the address, for example, '192.168.1.1'.
+   */
   get asString() {
     return octetsToString(this._octets);
   }
 
+  /**
+   * Returns the integer value of the address.
+   */
   get asInt() {
     return octetsToInt(this._octets);
   }
 
+  /**
+   * Returns the address as a /32 cidr. For example: '192.168.1.1/32'
+   */
   get asCidr() {
     return octetsToString(this._octets) + '/32';
   }
 
+  /**
+   * Returns the reverse lookup hostname for the address.
+   */
   get reverse() {
     return `${this._octets[3]}.${this._octets[2]}.${this._octets[
       1
     ]}.${this._octets[0]}.in-addr.arpa`;
   }
 
+  /**
+   * Returns the binary representation of the address, in string form.
+   */
   get asBinary() {
     let o = [];
     for (let i = 0; i < this._octets.length; i++) {
@@ -80,6 +102,9 @@ class IPv4 {
     return `${o[0]}.${o[1]}.${o[2]}.${o[3]}`;
   }
 
+  /**
+   * Provides the hex value of the address.
+   */
   get asHex() {
     return this.asInt.toString(16);
   }
@@ -87,19 +112,31 @@ class IPv4 {
   //TODO Return country code of IP
   /* get countryCode() {} */
 
+  /**
+   * Returns the next adjacent address.
+   */
   get next() {
     return new IPv4(this.asInt + 1);
   }
 
+  /**
+   * Returns the previous adjacent address.
+   */
   get prev() {
     return new IPv4(this.asInt - 1);
   }
-
   //TODO RFC6890
   /*get reserved() {} */
 }
 
-class Cidr {
+/**
+ * The Subnet class represents an IPv4 subnet.
+ */
+class Subnet {
+  /**
+   * The constructor expects a string parameter that is a valid CIDR. For example, '10.0.0.0/16'.
+   * @param {String} input 
+   */
   constructor(input) {
     let split = input.split('/');
     this._bitMask = split[1];
@@ -107,16 +144,28 @@ class Cidr {
     //TODO: accept array of ips, generate the lowest common denominator CIDR
   }
 
+  /**
+   * Get the last valid address in the subnet.
+   * @returns IPv4
+   */
   get max() {
     let initial = this.gateway.asInt;
     let add = Math.pow(2, 32 - this._bitMask);
     return new IPv4(initial + add - 1);
   }
 
+  /**
+   * Return the number of addresses that are possible within the subnet.
+   * @returns Integer
+   */
   get count() {
     return Math.pow(2, 32 - this._bitMask);
   }
 
+  /**
+   * Returns the netmask address for the subnet, for example '255.255.0.0'
+   * @returns IPv4
+   */
   get netmask() {
     let result = 0;
     let count = this._bitMask;
@@ -127,14 +176,26 @@ class Cidr {
     return new IPv4(result).asString;
   }
 
+  /**
+   * Returns the first and last address in the subnet.
+   * @returns array of IPv4
+   */
   get range() {
     return [this.gateway, this.max];
   }
 
+  /**
+   * Returns the wildcard mask of the subnets, for example '0.0.0.7' for subnet '1.2.3.4/29'.
+   * @returns IPv4
+   */
   get wildcardmask() {
     return new IPv4(Math.pow(2, 32 - this._bitMask) - 1);
   }
 
+  /**
+   * Returns the gateway address for the subnet.
+   * @returns IPv4
+   */
   get gateway() {
     let mask = this.wildcardmask._octets;
     let result = [];
@@ -148,30 +209,49 @@ class Cidr {
     return new IPv4(`${result[0]}.${result[1]}.${result[2]}.${result[3]}`);
   }
 
+  /**
+   * Returns the broadcast address for the subnet
+   * @returns IPv4
+   */
   get broadcast() {
     let initial = this.gateway.asInt;
     let add = Math.pow(2, 32 - this._bitMask) - 1;
     return new IPv4(initial + add);
   }
 
-  subnets(input, limit) {
-    input = input.replace('/', '');
+  /**
+   * Returns all subnets within the subnet, given the bitmask parameter. For example, if you have a subnet s for '10.0.0.0/16', calling s.subnets('/24') will return all /24 subnets that are legal within 10.0.0.0/16. If you want to limit the number of subnets returned, add the second parameter: s.subnets('/24', 4) will return 4 subnets.
+   * @param {String} bitmask
+   * @param {Integer} limit 
+   * @returns Array of Subnets
+   */
+  subnets(bitmask, limit) {
+    bitmask = bitmask.replace('/', '');
     let count = this._ip.asInt;
     let max = this.max.asInt;
-    if (limit && limit < max) {
-      max = limit;
-    }
+
     let subnets = [];
 
-    let step = Math.pow(2, 32 - input);
+    let step = Math.pow(2, 32 - bitmask);
+
+    if (limit) {
+      limit = this._ip.asInt + limit * step;
+      if (limit < max) {
+        max = limit;
+      }
+    }
 
     while (count < max) {
-      subnets.push(`${new IPv4(count).asString}/${input}`);
+      subnets.push(new Subnet(`${new IPv4(count).asString}/${bitmask}`));
       count += step;
     }
     return subnets;
   }
 
+  /**
+   * Return all IPv4 addresses within the subnet.
+   * @returns Array of IPv4
+   */
   get ipList() {
     let ips = [];
     let current = this.gateway;
@@ -185,6 +265,11 @@ class Cidr {
   //TODO test if cidr intersects this cidr
   /* intersects(otherCidr) {} */
 
+  /**
+   * Test to see if an IPv4 is within the subnet.
+   * @param {IPv4} ip 
+   * @returns Boolean
+   */
   includes(ip) {
     if (ip.asInt > this.gateway.asInt && ip.asInt < this.broadcast.asInt) {
       return true;
@@ -196,16 +281,24 @@ class Cidr {
   // TODO merge cidrs into one combined CIDR, ['1.0.0.0/24', '1.0.1.0/24'] to ['1.0.0.0/23']
   /* merge(cidrArray) {} */
 
+  /**
+   * Returns the next adjacent subnet
+   * @returns Subnet
+   */
   get next() {
-    return new Cidr(
+    return new Subnet(
       new IPv4(this.gateway.asInt + Math.pow(2, 32 - this._bitMask)).asString +
         '/' +
         this._bitMask
     );
   }
 
+  /**
+   * Returns the previous adjacent subnet.
+   * @returns Subnet
+   */
   get prev() {
-    return new Cidr(
+    return new Subnet(
       new IPv4(this.gateway.asInt - Math.pow(2, 32 - this._bitMask)).asString +
         '/' +
         this._bitMask
@@ -215,5 +308,5 @@ class Cidr {
 
 module.exports = {
   IPv4: IPv4,
-  Cidr: Cidr
+  Subnet: Subnet
 };

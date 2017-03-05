@@ -1,10 +1,11 @@
 {
-  "name": "decidr",
-  "version": "1.0.0",
+  "name": "node-cidr",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "time nyc --cache --reporter=lcov ava --verbose && nyc report"
+    "test": "time nyc --cache --reporter=lcov ava --verbose && nyc report",
+    "docs": "jsdoc2md --template README.hbs --files index.js > README.md"
   },
   "keywords": [
     "calculator",
@@ -22,6 +23,7 @@
   "license": "ISC",
   "devDependencies": {
     "ava": "^0.18.2",
+    "jsdoc-to-markdown": "^3.0.0",
     "nyc": "^10.1.2"
   },
   "ava": {
