@@ -1,74 +1,5 @@
 'use strict';
 
-// RFC6890: Special-Purpose IP Address Registries
-let special_addr_tbl = {
-  '0.0.0.0/8': {
-    name: 'This host on this network',
-    attrs: 'S'
-  },
-  '10.0.0.0/8': {
-    name: 'Private-Use',
-    attrs: 'SDF'
-  },
-  '100.64.0.0/10': {
-    name: 'Shared Address Space',
-    attrs: 'SDF'
-  },
-  '127.0.0.0/8': {
-    name: 'Loopback',
-    attrs: ''
-  },
-  '169.254.0.0/16': {
-    name: 'Link Local',
-    attrs: 'SD'
-  },
-  '172.16.0.0/12': {
-    name: 'Private-Use',
-    attrs: 'SDF'
-  },
-  // we write it before /24, otherwise Net#describe() won't match it
-  '192.0.0.0/29 ': {
-    name: 'DS-Lite',
-    attrs: 'SDF'
-  },
-  '192.0.0.0/24': {
-    name: 'IETF Protocol Assignments',
-    attrs: ''
-  },
-  '192.0.2.0/24 ': {
-    name: 'Documentation (TEST-NET-1)',
-    attrs: ''
-  },
-  '192.88.99.0/24': {
-    name: '6to4 Relay Anycast',
-    attrs: 'SDFG'
-  },
-  '192.168.0.0/16': {
-    name: 'Private-Use',
-    attrs: 'SDF'
-  },
-  '198.18.0.0/15': {
-    name: 'Benchmarking',
-    attrs: 'SDF'
-  },
-  '198.51.100.0/24': {
-    name: 'Documentation (TEST-NET-2)',
-    attrs: ''
-  },
-  '203.0.113.0/24': {
-    name: 'Documentation (TEST-NET-3)',
-    attrs: ''
-  },
-  '255.255.255.255/32': {
-    name: 'Limited Broadcast',
-    attrs: 'D'
-  },
-  '240.0.0.0/4': {
-    name: 'Reserved',
-    attrs: ''
-  }
-};
-
 function octetsToInt(octets) {
   return octets.reduce(
     function(acc, curr, idx) {
@@ -93,7 +24,12 @@ function stringToOctets(input) {
 function intToOctets(input, limit) {
   let octets = [];
   for (let i = 0; i <= limit; i++) {
-    octets[i] = parseInt(input / Math.pow(2, (limit - i) * 8));
+    let divider = Math.pow(2, (limit - i) * 8);
+    let result = 0;
+    if (input >= divider) {
+      result = input / divider;
+    }
+    octets[i] = parseInt(result);
     input = input % Math.pow(2, (limit - i) * 8);
   }
   return octets;
@@ -148,9 +84,8 @@ class IPv4 {
     return this.asInt.toString(16);
   }
 
-  get countryCode() {
-    //TODO
-  }
+  //TODO Return country code of IP
+  /* get countryCode() {} */
 
   get next() {
     return new IPv4(this.asInt + 1);
@@ -160,9 +95,8 @@ class IPv4 {
     return new IPv4(this.asInt - 1);
   }
 
-  get reserved() {
-    //TODO
-  }
+  //TODO RFC6890
+  /*get reserved() {} */
 }
 
 class Cidr {
@@ -174,8 +108,8 @@ class Cidr {
   }
 
   get max() {
-    let initial = this._ip.asInt;
-    let add = Math.pow(2, 32 - this._bitMask) - 1;
+    let initial = this.gateway.asInt;
+    let add = Math.pow(2, 32 - this._bitMask);
     return new IPv4(initial + add - 1);
   }
 
@@ -194,23 +128,39 @@ class Cidr {
   }
 
   get range() {
-    return [new IPv4(this._ip.asInt + 1), this.max];
+    return [this.gateway, this.max];
+  }
+
+  get wildcardmask() {
+    return new IPv4(Math.pow(2, 32 - this._bitMask) - 1);
   }
 
   get gateway() {
-    return this._ip;
+    let mask = this.wildcardmask._octets;
+    let result = [];
+    for (let i = 0; i < this._ip._octets.length; i++) {
+      if (this.wildcardmask._octets[i] > this._ip._octets[i]) {
+        result[i] = 0;
+      } else {
+        result[i] = this._ip._octets[i];
+      }
+    }
+    return new IPv4(`${result[0]}.${result[1]}.${result[2]}.${result[3]}`);
   }
 
   get broadcast() {
-    let initial = this._ip.asInt;
+    let initial = this.gateway.asInt;
     let add = Math.pow(2, 32 - this._bitMask) - 1;
     return new IPv4(initial + add);
   }
 
-  subnets(input) {
+  subnets(input, limit) {
     input = input.replace('/', '');
     let count = this._ip.asInt;
     let max = this.max.asInt;
+    if (limit && limit < max) {
+      max = limit;
+    }
     let subnets = [];
 
     let step = Math.pow(2, 32 - input);
@@ -223,21 +173,17 @@ class Cidr {
   }
 
   get ipList() {
-    //var block = '127.0.0.0/30';
-    //> Array.from(new cidr.Net('1.2.3.4/29').to_iter())
-    /*
-        [ #<IPv4: 1.2.3.1>,
-            #<IPv4: 1.2.3.2>,
-            #<IPv4: 1.2.3.3>,
-            #<IPv4: 1.2.3.4>,
-            #<IPv4: 1.2.3.5>,
-            #<IPv4: 1.2.3.6> ]
-      */
+    let ips = [];
+    let current = this.gateway;
+    while (current.asInt <= this.max.asInt) {
+      ips.push(current);
+      current = current.next;
+    }
+    return ips;
   }
 
-  intersects(otherCidr) {
-    //TODO test if cidr intersects this cidr
-  }
+  //TODO test if cidr intersects this cidr
+  /* intersects(otherCidr) {} */
 
   includes(ip) {
     if (ip.asInt > this.gateway.asInt && ip.asInt < this.broadcast.asInt) {
@@ -247,13 +193,12 @@ class Cidr {
     }
   }
 
-  merge(cidrArray) {
-    // TODO merge cidrs into one combined CIDR, ['1.0.0.0/24', '1.0.1.0/24'] to ['1.0.0.0/23']
-  }
+  // TODO merge cidrs into one combined CIDR, ['1.0.0.0/24', '1.0.1.0/24'] to ['1.0.0.0/23']
+  /* merge(cidrArray) {} */
 
   get next() {
     return new Cidr(
-      new IPv4(this._ip.asInt + Math.pow(2, 32 - this._bitMask)).asString +
+      new IPv4(this.gateway.asInt + Math.pow(2, 32 - this._bitMask)).asString +
         '/' +
         this._bitMask
     );
@@ -261,7 +206,7 @@ class Cidr {
 
   get prev() {
     return new Cidr(
-      new IPv4(this._ip.asInt - Math.pow(2, 32 - this._bitMask)).asString +
+      new IPv4(this.gateway.asInt - Math.pow(2, 32 - this._bitMask)).asString +
         '/' +
         this._bitMask
     );
