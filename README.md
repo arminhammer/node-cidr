@@ -1,5 +1,35 @@
 [![view on npm](http://img.shields.io/npm/v/example.svg)](https://www.npmjs.org/package/example) 
 
+node-cidr is a Javascript library that makes it easy to manipulate IPs and Subnets. Currently only IPv4 is supported, but IPv6 support is planned for a future release. The library consists of two classes: IPv4 and Subnet. The IPv4 class allows you to manipulate IP addresses, while Subnet allows you to manipulate subnets using CIDR notation.
+
+Some example usage:
+
+```javascript
+let cidr = new Subnet('1.2.3.4/29');
+cidr.subnets('/30')[0].asString // '1.2.3.4/30'
+cidr.count // 8
+cidr.netmask //'255.255.255.248'
+cidr.wildcardmask.asString // '0.0.0.7'
+cidr.includes(new IPv4('1.2.3.4')) // true
+cidr.includes(new IPv4('192.168.0.5')) // false
+cidr.gateway // IPv4('1.2.3.0')
+cidr.max // IPv4('1.2.3.7')
+cidr.broadcast // IPv4('1.2.3.7')
+cidr.range // [IPv4('1.2.3.0'), IPv4('1.2.3.7')]
+cidr.prev // Subnet('1.2.2.248/29')
+cidr.next // Subnet('1.2.3.8/29')
+cidr.ipList /* [
+    IPv4('1.2.3.0'),
+    IPv4('1.2.3.1'),
+    IPv4('1.2.3.2'),
+    IPv4('1.2.3.3'),
+    IPv4('1.2.3.4'),
+    IPv4('1.2.3.5'),
+    IPv4('1.2.3.6'),
+    IPv4('1.2.3.7')
+  ] */
+```
+
 ## Classes
 
 <dl>
@@ -96,6 +126,7 @@ The Subnet class represents an IPv4 subnet.
 
 * [Subnet](#Subnet)
     * [new Subnet(input)](#new_Subnet_new)
+    * [.asString](#Subnet+asString) ⇒
     * [.max](#Subnet+max) ⇒
     * [.count](#Subnet+count) ⇒
     * [.netmask](#Subnet+netmask) ⇒
@@ -119,6 +150,13 @@ The constructor expects a string parameter that is a valid CIDR. For example, '1
 | --- | --- |
 | input | <code>String</code> | 
 
+<a name="Subnet+asString"></a>
+
+### subnet.asString ⇒
+Returns the string representation of the subnet, in CIDR notation.
+
+**Kind**: instance property of <code>[Subnet](#Subnet)</code>  
+**Returns**: String  
 <a name="Subnet+max"></a>
 
 ### subnet.max ⇒

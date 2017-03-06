@@ -76,9 +76,7 @@ ava('10.1.0.0/17', test => {
 
 ava('1.2.3.4/29', test => {
   let cidr = new Subnet('1.2.3.4/29');
-  //test.is(cidr.subnets('/18').length, 2);
-  //test.is(cidr.subnets('/24').length, 128);
-  //test.is(cidr.subnets('/30').length, 8192);
+  test.is(cidr.subnets('/30')[0].asString, '1.2.3.4/30');
   test.is(cidr.count, 8);
   test.is(cidr.netmask, '255.255.255.248');
   test.is(cidr.wildcardmask.asString, '0.0.0.7');

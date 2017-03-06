@@ -125,6 +125,7 @@ class IPv4 {
   get prev() {
     return new IPv4(this.asInt - 1);
   }
+
   //TODO RFC6890
   /*get reserved() {} */
 }
@@ -142,6 +143,14 @@ class Subnet {
     this._bitMask = split[1];
     this._ip = new IPv4(split[0]);
     //TODO: accept array of ips, generate the lowest common denominator CIDR
+  }
+
+  /**
+   * Returns the string representation of the subnet, in CIDR notation.
+   * @returns String
+   */
+  get asString() {
+    return `${this._ip.asString}/${this._bitMask}`;
   }
 
   /**
