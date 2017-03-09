@@ -35,7 +35,7 @@
     "source": [
       "./js/**/*.{js,jsx}"
     ],
-    "concurrency": 10,
+    "concurrency": 32,
     "failFast": true,
     "tap": false,
     "powerAssert": false

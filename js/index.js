@@ -1,9 +1,10 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
+const abs = Math.abs;
 function pow2(n) {
     if (n == 0)
         return 1;
-    return 2 << (n - 1);
+    return abs(2 << (n - 1));
 }
 function octetsToInt(octets) {
     return octets.reduce(function (acc, curr, idx) {
@@ -174,7 +175,7 @@ class Subnetv4 {
         let result = 0;
         let count = this._bitMask;
         while (count > 0) {
-            result += Math.pow(2, 32 - count);
+            result += pow2(32 - count);
             count--;
         }
         return new IPv4(result);
