@@ -40,7 +40,7 @@ function padLeft(input, char, min) {
 class IPv4 {
     /**
      * The constructor expects a string in the format '192.168.0.1', or alternatively an integer.
-     * @param {String} input
+     * @param {string|number} input
      */
     constructor(input) {
         this._octets = [];
@@ -55,36 +55,42 @@ class IPv4 {
     }
     /**
      * Returns the address as an array of integers.
+     * @returns {number[]}
      */
     get octets() {
         return this._octets;
     }
     /**
      * Returns the string representation of the address, for example, '192.168.1.1'.
+     * @returns {string}
      */
     get asString() {
         return octetsToString(this._octets);
     }
     /**
      * Returns the integer value of the address.
+     * @returns {number}
      */
     get asInt() {
         return octetsToInt(this._octets);
     }
     /**
      * Returns the address as a /32 cidr. For example: '192.168.1.1/32'
+     * @returns {string}
      */
     get asCidr() {
         return octetsToString(this._octets) + '/32';
     }
     /**
      * Returns the reverse lookup hostname for the address.
+     * @returns {string}
      */
     get reverse() {
         return `${this._octets[3]}.${this._octets[2]}.${this._octets[1]}.${this._octets[0]}.in-addr.arpa`;
     }
     /**
      * Returns the binary representation of the address, in string form.
+     * @returns {string}
      */
     get asBinary() {
         let o = [];
@@ -95,6 +101,7 @@ class IPv4 {
     }
     /**
      * Provides the hex value of the address.
+     * @returns {string}
      */
     get asHex() {
         return this.asInt.toString(16);
@@ -103,12 +110,14 @@ class IPv4 {
     /* get countryCode() {} */
     /**
      * Returns the next adjacent address.
+     * @returns {Ipv4}
      */
     get next() {
         return new IPv4(this.asInt + 1);
     }
     /**
      * Returns the previous adjacent address.
+     * @returns {IPv4}
      */
     get prev() {
         return new IPv4(this.asInt - 1);
@@ -121,7 +130,7 @@ exports.IPv4 = IPv4;
 class Subnetv4 {
     /**
      * The constructor expects a string parameter that is a valid CIDR. For example, '10.0.0.0/16'.
-     * @param {String} input
+     * @param {string} input
      */
     constructor(input) {
         let split = input.split('/');
@@ -131,14 +140,14 @@ class Subnetv4 {
     }
     /**
      * Returns the string representation of the subnet, in CIDR notation.
-     * @returns String
+     * @returns {string}
      */
     get asString() {
         return `${this._ip.asString}/${this._bitMask}`;
     }
     /**
      * Get the last valid address in the subnet.
-     * @returns IPv4
+     * @returns {IPv4}
      */
     get max() {
         let initial = this.gateway.asInt;
@@ -147,14 +156,14 @@ class Subnetv4 {
     }
     /**
      * Return the number of addresses that are possible within the subnet.
-     * @returns Integer
+     * @returns {number}
      */
     get count() {
         return Math.pow(2, 32 - this._bitMask);
     }
     /**
      * Returns the netmask address for the subnet, for example '255.255.0.0'
-     * @returns IPv4
+     * @returns {IPv4}
      */
     get netmask() {
         let result = 0;
@@ -167,21 +176,21 @@ class Subnetv4 {
     }
     /**
      * Returns the first and last address in the subnet.
-     * @returns array of IPv4
+     * @returns {IPv4[]}
      */
     get range() {
         return [this.gateway, this.max];
     }
     /**
      * Returns the wildcard mask of the subnets, for example '0.0.0.7' for subnet '1.2.3.4/29'.
-     * @returns IPv4
+     * @returns {IPv4}
      */
     get wildcardmask() {
         return new IPv4(Math.pow(2, 32 - this._bitMask) - 1);
     }
     /**
      * Returns the gateway address for the subnet.
-     * @returns IPv4
+     * @returns {IPv4}
      */
     get gateway() {
         let mask = this.wildcardmask.octets;
@@ -198,7 +207,7 @@ class Subnetv4 {
     }
     /**
      * Returns the broadcast address for the subnet
-     * @returns IPv4
+     * @returns {IPv4}
      */
     get broadcast() {
         let initial = this.gateway.asInt;
@@ -209,7 +218,7 @@ class Subnetv4 {
      * Returns all subnets within the subnet, given the bitmask parameter. For example, if you have a subnet s for '10.0.0.0/16', calling s.subnets('/24') will return all /24 subnets that are legal within 10.0.0.0/16. If you want to limit the number of subnets returned, add the second parameter: s.subnets('/24', 4) will return 4 subnets.
      * @param {String} bitmask
      * @param {Integer} limit
-     * @returns Array of Subnets
+     * @returns {Subnetv4[]}
      */
     subnets(bitmask, limit) {
         let bitmaskInt = parseInt(bitmask.replace('/', ''));
@@ -231,7 +240,7 @@ class Subnetv4 {
     }
     /**
      * Return all IPv4 addresses within the subnet.
-     * @returns Array of IPv4
+     * @returns {IPv4[]}
      */
     get ipList() {
         let ips = [];
@@ -247,7 +256,7 @@ class Subnetv4 {
     /**
      * Test to see if an IPv4 is within the subnet.
      * @param {IPv4} ip
-     * @returns Boolean
+     * @returns {boolean}
      */
     includes(ip) {
         if (ip.asInt > this.gateway.asInt && ip.asInt < this.broadcast.asInt) {
@@ -261,7 +270,7 @@ class Subnetv4 {
     /* merge(cidrArray) {} */
     /**
      * Returns the next adjacent subnet
-     * @returns Subnet
+     * @returns {Subnetv4}
      */
     get next() {
         return new Subnetv4(new IPv4(this.gateway.asInt + Math.pow(2, 32 - this._bitMask)).asString +
@@ -270,7 +279,7 @@ class Subnetv4 {
     }
     /**
      * Returns the previous adjacent subnet.
-     * @returns Subnet
+     * @returns {Subnetv4}
      */
     get prev() {
         return new Subnetv4(new IPv4(this.gateway.asInt - Math.pow(2, 32 - this._bitMask)).asString +
