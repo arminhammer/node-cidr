@@ -1,6 +1,6 @@
 {
   "name": "node-cidr",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "[![view on npm](http://img.shields.io/npm/v/example.svg)](https://www.npmjs.org/package/example)",
   "main": "js/index.js",
   "types": "js/index.d.ts",
