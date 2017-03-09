@@ -1,9 +1,14 @@
 'use strict';
 
+function pow2(n: number): number {
+  if (n == 0) return 1;
+  return 2 << (n - 1);
+}
+
 function octetsToInt(octets: number[]): number {
   return octets.reduce(
     function (acc, curr, idx) {
-      return acc + curr * Math.pow(2, (3 - idx) * 8);
+      return acc + curr * pow2((3 - idx) * 8);
     },
     0
   );
@@ -24,13 +29,13 @@ function stringToOctets(input: string): number[] {
 function intToOctets(input: number, limit: number): number[] {
   let octets: number[] = [];
   for (let i = 0; i <= limit; i++) {
-    let divider = Math.pow(2, (limit - i) * 8);
+    let divider = pow2((limit - i) * 8);
     let result = 0;
     if (input >= divider) {
       result = input / divider;
     }
     octets[i] = Math.trunc(result);
-    input = input % Math.pow(2, (limit - i) * 8);
+    input = input % pow2((limit - i) * 8);
   }
   return octets;
 }
@@ -182,7 +187,7 @@ export class Subnetv4 {
    */
   get max(): IPv4 {
     let initial = this.gateway.asInt;
-    let add = Math.pow(2, 32 - this._bitMask);
+    let add = pow2(32 - this._bitMask);
     return new IPv4(initial + add - 1);
   }
 
@@ -191,7 +196,7 @@ export class Subnetv4 {
    * @returns {number}
    */
   get count(): number {
-    return Math.pow(2, 32 - this._bitMask);
+    return pow2(32 - this._bitMask);
   }
 
   /**
@@ -221,7 +226,7 @@ export class Subnetv4 {
    * @returns {IPv4}
    */
   get wildcardmask(): IPv4 {
-    return new IPv4(Math.pow(2, 32 - this._bitMask) - 1);
+    return new IPv4(pow2(32 - this._bitMask) - 1);
   }
 
   /**
@@ -247,14 +252,14 @@ export class Subnetv4 {
    */
   get broadcast(): IPv4 {
     let initial = this.gateway.asInt;
-    let add = Math.pow(2, 32 - this._bitMask) - 1;
+    let add = pow2(32 - this._bitMask) - 1;
     return new IPv4(initial + add);
   }
 
   /**
    * Returns all subnets within the subnet, given the bitmask parameter. For example, if you have a subnet s for '10.0.0.0/16', calling s.subnets('/24') will return all /24 subnets that are legal within 10.0.0.0/16. If you want to limit the number of subnets returned, add the second parameter: s.subnets('/24', 4) will return 4 subnets.
-   * @param {String} bitmask
-   * @param {Integer} limit 
+   * @param {string} bitmask
+   * @param {number} limit 
    * @returns {Subnetv4[]}
    */
   subnets(bitmask: string, limit: number): Subnetv4[] {
@@ -264,7 +269,7 @@ export class Subnetv4 {
 
     let subnets = [];
 
-    let step = Math.pow(2, 32 - bitmaskInt);
+    let step = pow2(32 - bitmaskInt);
 
     if (limit) {
       limit = this._ip.asInt + limit * step;
@@ -319,7 +324,7 @@ export class Subnetv4 {
    */
   get next(): Subnetv4 {
     return new Subnetv4(
-      new IPv4(this.gateway.asInt + Math.pow(2, 32 - this._bitMask)).asString +
+      new IPv4(this.gateway.asInt + pow2(32 - this._bitMask)).asString +
       '/' +
       this._bitMask
     );
@@ -331,7 +336,7 @@ export class Subnetv4 {
    */
   get prev(): Subnetv4 {
     return new Subnetv4(
-      new IPv4(this.gateway.asInt - Math.pow(2, 32 - this._bitMask)).asString +
+      new IPv4(this.gateway.asInt - pow2(32 - this._bitMask)).asString +
       '/' +
       this._bitMask
     );

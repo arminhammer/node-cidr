@@ -232,8 +232,8 @@ Returns all subnets within the subnet, given the bitmask parameter. For example,
 
 | Param | Type |
 | --- | --- |
-| bitmask | <code>String</code> | 
-| limit | <code>Integer</code> | 
+| bitmask | <code>string</code> | 
+| limit | <code>number</code> | 
 
 <a name="Subnetv4+includes"></a>
 

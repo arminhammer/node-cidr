@@ -107,8 +107,8 @@ export declare class Subnetv4 {
     readonly broadcast: IPv4;
     /**
      * Returns all subnets within the subnet, given the bitmask parameter. For example, if you have a subnet s for '10.0.0.0/16', calling s.subnets('/24') will return all /24 subnets that are legal within 10.0.0.0/16. If you want to limit the number of subnets returned, add the second parameter: s.subnets('/24', 4) will return 4 subnets.
-     * @param {String} bitmask
-     * @param {Integer} limit
+     * @param {string} bitmask
+     * @param {number} limit
      * @returns {Subnetv4[]}
      */
     subnets(bitmask: string, limit: number): Subnetv4[];
