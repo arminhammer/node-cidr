@@ -1,0 +1,7 @@
+README.hbs
+README.md
+tsconfig.json
+index.ts
+coverage/
+.nyc_output/
+test/

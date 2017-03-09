@@ -1,11 +1,11 @@
 [![view on npm](http://img.shields.io/npm/v/example.svg)](https://www.npmjs.org/package/example) 
 
-node-cidr is a Javascript library that makes it easy to manipulate IPs and Subnets. Currently only IPv4 is supported, but IPv6 support is planned for a future release. The library consists of two classes: IPv4 and Subnet. The IPv4 class allows you to manipulate IP addresses, while Subnet allows you to manipulate subnets using CIDR notation.
+node-cidr is a Javascript library that makes it easy to manipulate IPs and Subnets. Currently only IPv4 is supported, but IPv6 support is planned for a future release. The library consists of two classes: IPv4 and Subnetv4. The IPv4 class allows you to manipulate IP addresses, while Subnetv4 allows you to manipulate subnets using CIDR notation.
 
 Some example usage:
 
 ```javascript
-let cidr = new Subnet('1.2.3.4/29');
+let cidr = new Subnetv4('1.2.3.4/29');
 cidr.subnets('/30')[0].asString // '1.2.3.4/30'
 cidr.count // 8
 cidr.netmask //'255.255.255.248'
@@ -36,8 +36,8 @@ cidr.ipList /* [
 <dt><a href="#IPv4">IPv4</a></dt>
 <dd><p>The IPv4 class represents an IPv4 address.</p>
 </dd>
-<dt><a href="#Subnet">Subnet</a></dt>
-<dd><p>The Subnet class represents an IPv4 subnet.</p>
+<dt><a href="#Subnetv4">Subnetv4</a></dt>
+<dd><p>The Subnetv4 class represents an IPv4 subnet.</p>
 </dd>
 </dl>
 
@@ -50,6 +50,7 @@ The IPv4 class represents an IPv4 address.
 
 * [IPv4](#IPv4)
     * [new IPv4(input)](#new_IPv4_new)
+    * [.octets](#IPv4+octets)
     * [.asString](#IPv4+asString)
     * [.asInt](#IPv4+asInt)
     * [.asCidr](#IPv4+asCidr)
@@ -69,6 +70,12 @@ The constructor expects a string in the format '192.168.0.1', or alternatively a
 | --- | --- |
 | input | <code>String</code> | 
 
+<a name="IPv4+octets"></a>
+
+### iPv4.octets
+Returns the address as an array of integers.
+
+**Kind**: instance property of <code>[IPv4](#IPv4)</code>  
 <a name="IPv4+asString"></a>
 
 ### iPv4.asString
@@ -117,32 +124,32 @@ Returns the next adjacent address.
 Returns the previous adjacent address.
 
 **Kind**: instance property of <code>[IPv4](#IPv4)</code>  
-<a name="Subnet"></a>
+<a name="Subnetv4"></a>
 
-## Subnet
-The Subnet class represents an IPv4 subnet.
+## Subnetv4
+The Subnetv4 class represents an IPv4 subnet.
 
 **Kind**: global class  
 
-* [Subnet](#Subnet)
-    * [new Subnet(input)](#new_Subnet_new)
-    * [.asString](#Subnet+asString) ⇒
-    * [.max](#Subnet+max) ⇒
-    * [.count](#Subnet+count) ⇒
-    * [.netmask](#Subnet+netmask) ⇒
-    * [.range](#Subnet+range) ⇒
-    * [.wildcardmask](#Subnet+wildcardmask) ⇒
-    * [.gateway](#Subnet+gateway) ⇒
-    * [.broadcast](#Subnet+broadcast) ⇒
-    * [.ipList](#Subnet+ipList) ⇒
-    * [.next](#Subnet+next) ⇒
-    * [.prev](#Subnet+prev) ⇒
-    * [.subnets(bitmask, limit)](#Subnet+subnets) ⇒
-    * [.includes(ip)](#Subnet+includes) ⇒
+* [Subnetv4](#Subnetv4)
+    * [new Subnetv4(input)](#new_Subnetv4_new)
+    * [.asString](#Subnetv4+asString) ⇒
+    * [.max](#Subnetv4+max) ⇒
+    * [.count](#Subnetv4+count) ⇒
+    * [.netmask](#Subnetv4+netmask) ⇒
+    * [.range](#Subnetv4+range) ⇒
+    * [.wildcardmask](#Subnetv4+wildcardmask) ⇒
+    * [.gateway](#Subnetv4+gateway) ⇒
+    * [.broadcast](#Subnetv4+broadcast) ⇒
+    * [.ipList](#Subnetv4+ipList) ⇒
+    * [.next](#Subnetv4+next) ⇒
+    * [.prev](#Subnetv4+prev) ⇒
+    * [.subnets(bitmask, limit)](#Subnetv4+subnets) ⇒
+    * [.includes(ip)](#Subnetv4+includes) ⇒
 
-<a name="new_Subnet_new"></a>
+<a name="new_Subnetv4_new"></a>
 
-### new Subnet(input)
+### new Subnetv4(input)
 The constructor expects a string parameter that is a valid CIDR. For example, '10.0.0.0/16'.
 
 
@@ -150,89 +157,89 @@ The constructor expects a string parameter that is a valid CIDR. For example, '1
 | --- | --- |
 | input | <code>String</code> | 
 
-<a name="Subnet+asString"></a>
+<a name="Subnetv4+asString"></a>
 
-### subnet.asString ⇒
+### subnetv4.asString ⇒
 Returns the string representation of the subnet, in CIDR notation.
 
-**Kind**: instance property of <code>[Subnet](#Subnet)</code>  
+**Kind**: instance property of <code>[Subnetv4](#Subnetv4)</code>  
 **Returns**: String  
-<a name="Subnet+max"></a>
+<a name="Subnetv4+max"></a>
 
-### subnet.max ⇒
+### subnetv4.max ⇒
 Get the last valid address in the subnet.
 
-**Kind**: instance property of <code>[Subnet](#Subnet)</code>  
+**Kind**: instance property of <code>[Subnetv4](#Subnetv4)</code>  
 **Returns**: IPv4  
-<a name="Subnet+count"></a>
+<a name="Subnetv4+count"></a>
 
-### subnet.count ⇒
+### subnetv4.count ⇒
 Return the number of addresses that are possible within the subnet.
 
-**Kind**: instance property of <code>[Subnet](#Subnet)</code>  
+**Kind**: instance property of <code>[Subnetv4](#Subnetv4)</code>  
 **Returns**: Integer  
-<a name="Subnet+netmask"></a>
+<a name="Subnetv4+netmask"></a>
 
-### subnet.netmask ⇒
+### subnetv4.netmask ⇒
 Returns the netmask address for the subnet, for example '255.255.0.0'
 
-**Kind**: instance property of <code>[Subnet](#Subnet)</code>  
+**Kind**: instance property of <code>[Subnetv4](#Subnetv4)</code>  
 **Returns**: IPv4  
-<a name="Subnet+range"></a>
+<a name="Subnetv4+range"></a>
 
-### subnet.range ⇒
+### subnetv4.range ⇒
 Returns the first and last address in the subnet.
 
-**Kind**: instance property of <code>[Subnet](#Subnet)</code>  
+**Kind**: instance property of <code>[Subnetv4](#Subnetv4)</code>  
 **Returns**: array of IPv4  
-<a name="Subnet+wildcardmask"></a>
+<a name="Subnetv4+wildcardmask"></a>
 
-### subnet.wildcardmask ⇒
+### subnetv4.wildcardmask ⇒
 Returns the wildcard mask of the subnets, for example '0.0.0.7' for subnet '1.2.3.4/29'.
 
-**Kind**: instance property of <code>[Subnet](#Subnet)</code>  
+**Kind**: instance property of <code>[Subnetv4](#Subnetv4)</code>  
 **Returns**: IPv4  
-<a name="Subnet+gateway"></a>
+<a name="Subnetv4+gateway"></a>
 
-### subnet.gateway ⇒
+### subnetv4.gateway ⇒
 Returns the gateway address for the subnet.
 
-**Kind**: instance property of <code>[Subnet](#Subnet)</code>  
+**Kind**: instance property of <code>[Subnetv4](#Subnetv4)</code>  
 **Returns**: IPv4  
-<a name="Subnet+broadcast"></a>
+<a name="Subnetv4+broadcast"></a>
 
-### subnet.broadcast ⇒
+### subnetv4.broadcast ⇒
 Returns the broadcast address for the subnet
 
-**Kind**: instance property of <code>[Subnet](#Subnet)</code>  
+**Kind**: instance property of <code>[Subnetv4](#Subnetv4)</code>  
 **Returns**: IPv4  
-<a name="Subnet+ipList"></a>
+<a name="Subnetv4+ipList"></a>
 
-### subnet.ipList ⇒
+### subnetv4.ipList ⇒
 Return all IPv4 addresses within the subnet.
 
-**Kind**: instance property of <code>[Subnet](#Subnet)</code>  
+**Kind**: instance property of <code>[Subnetv4](#Subnetv4)</code>  
 **Returns**: Array of IPv4  
-<a name="Subnet+next"></a>
+<a name="Subnetv4+next"></a>
 
-### subnet.next ⇒
+### subnetv4.next ⇒
 Returns the next adjacent subnet
 
-**Kind**: instance property of <code>[Subnet](#Subnet)</code>  
+**Kind**: instance property of <code>[Subnetv4](#Subnetv4)</code>  
 **Returns**: Subnet  
-<a name="Subnet+prev"></a>
+<a name="Subnetv4+prev"></a>
 
-### subnet.prev ⇒
+### subnetv4.prev ⇒
 Returns the previous adjacent subnet.
 
-**Kind**: instance property of <code>[Subnet](#Subnet)</code>  
+**Kind**: instance property of <code>[Subnetv4](#Subnetv4)</code>  
 **Returns**: Subnet  
-<a name="Subnet+subnets"></a>
+<a name="Subnetv4+subnets"></a>
 
-### subnet.subnets(bitmask, limit) ⇒
+### subnetv4.subnets(bitmask, limit) ⇒
 Returns all subnets within the subnet, given the bitmask parameter. For example, if you have a subnet s for '10.0.0.0/16', calling s.subnets('/24') will return all /24 subnets that are legal within 10.0.0.0/16. If you want to limit the number of subnets returned, add the second parameter: s.subnets('/24', 4) will return 4 subnets.
 
-**Kind**: instance method of <code>[Subnet](#Subnet)</code>  
+**Kind**: instance method of <code>[Subnetv4](#Subnetv4)</code>  
 **Returns**: Array of Subnets  
 
 | Param | Type |
@@ -240,12 +247,12 @@ Returns all subnets within the subnet, given the bitmask parameter. For example,
 | bitmask | <code>String</code> | 
 | limit | <code>Integer</code> | 
 
-<a name="Subnet+includes"></a>
+<a name="Subnetv4+includes"></a>
 
-### subnet.includes(ip) ⇒
+### subnetv4.includes(ip) ⇒
 Test to see if an IPv4 is within the subnet.
 
-**Kind**: instance method of <code>[Subnet](#Subnet)</code>  
+**Kind**: instance method of <code>[Subnetv4](#Subnetv4)</code>  
 **Returns**: Boolean  
 
 | Param | Type |

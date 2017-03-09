@@ -1,11 +1,12 @@
 {
   "name": "node-cidr",
-  "version": "0.1.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.1",
+  "description": "[![view on npm](http://img.shields.io/npm/v/example.svg)](https://www.npmjs.org/package/example)",
+  "main": "js/index.js",
+  "types": "js/index.d.ts",
   "scripts": {
-    "test": "time nyc --cache --reporter=lcov ava --verbose && nyc report",
-    "docs": "jsdoc2md --template README.hbs --files index.js > README.md"
+    "test": "time tsc && nyc --cache --reporter=lcov ava --verbose && nyc report",
+    "docs": "jsdoc2md --template README.hbs --files js/index.js > README.md"
   },
   "keywords": [
     "calculator",
@@ -20,22 +21,37 @@
     "subnet"
   ],
   "author": "Armin Graf",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "devDependencies": {
     "ava": "^0.18.2",
     "jsdoc-to-markdown": "^3.0.0",
-    "nyc": "^10.1.2"
+    "nyc": "^10.1.2",
+    "typescript": "^2.2.1"
   },
   "ava": {
     "files": [
       "test/*.js"
     ],
     "source": [
-      "**/*.{js,jsx}"
+      "./js/**/*.{js,jsx}"
     ],
     "concurrency": 10,
     "failFast": true,
     "tap": false,
     "powerAssert": false
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "jsdoc-to-markdown": "^3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arminhammer/node-cidr.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arminhammer/node-cidr/issues"
+  },
+  "homepage": "https://github.com/arminhammer/node-cidr#readme"
 }
