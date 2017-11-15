@@ -92,7 +92,8 @@ class IPv4 {
      * @returns {string}
      */
     get reverse() {
-        return `${this._octets[3]}.${this._octets[2]}.${this._octets[1]}.${this._octets[0]}.in-addr.arpa`;
+        return `${this._octets[3]}.${this._octets[2]}.${this._octets[1]}.${this
+            ._octets[0]}.in-addr.arpa`;
     }
     /**
      * Returns the binary representation of the address, in string form.
@@ -265,7 +266,7 @@ class Subnetv4 {
      * @returns {boolean}
      */
     includes(ip) {
-        if (ip.asInt > this.gateway.asInt && ip.asInt < this.broadcast.asInt) {
+        if (ip.asInt >= this.gateway.asInt && ip.asInt <= this.broadcast.asInt) {
             return true;
         }
         else {

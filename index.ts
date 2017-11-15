@@ -1,6 +1,6 @@
 'use strict';
 
-const abs = Math.abs
+const abs = Math.abs;
 
 function pow2(n: number): number {
   if (n == 0) return 1;
@@ -8,12 +8,9 @@ function pow2(n: number): number {
 }
 
 function octetsToInt(octets: number[]): number {
-  return octets.reduce(
-    function (acc, curr, idx) {
-      return acc + curr * pow2((3 - idx) * 8);
-    },
-    0
-  );
+  return octets.reduce(function(acc, curr, idx) {
+    return acc + curr * pow2((3 - idx) * 8);
+  }, 0);
 }
 
 function octetsToString(octets: number[]): string {
@@ -53,7 +50,6 @@ function padLeft(input: string, char: string, min: number): string {
  * The IPv4 class represents an IPv4 address.
  */
 export class IPv4 {
-
   private readonly _octets: number[];
 
   /**
@@ -108,9 +104,8 @@ export class IPv4 {
    * @returns {string}
    */
   get reverse(): string {
-    return `${this._octets[3]}.${this._octets[2]}.${this._octets[
-      1
-    ]}.${this._octets[0]}.in-addr.arpa`;
+    return `${this._octets[3]}.${this._octets[2]}.${this._octets[1]}.${this
+      ._octets[0]}.in-addr.arpa`;
   }
 
   /**
@@ -160,7 +155,6 @@ export class IPv4 {
  * The Subnetv4 class represents an IPv4 subnet.
  */
 export class Subnetv4 {
-
   private readonly _bitMask: number;
   private readonly _ip: IPv4;
 
@@ -310,7 +304,7 @@ export class Subnetv4 {
    * @returns {boolean}
    */
   includes(ip: IPv4): boolean {
-    if (ip.asInt > this.gateway.asInt && ip.asInt < this.broadcast.asInt) {
+    if (ip.asInt >= this.gateway.asInt && ip.asInt <= this.broadcast.asInt) {
       return true;
     } else {
       return false;
@@ -327,8 +321,8 @@ export class Subnetv4 {
   get next(): Subnetv4 {
     return new Subnetv4(
       new IPv4(this.gateway.asInt + pow2(32 - this._bitMask)).asString +
-      '/' +
-      this._bitMask
+        '/' +
+        this._bitMask
     );
   }
 
@@ -339,8 +333,8 @@ export class Subnetv4 {
   get prev(): Subnetv4 {
     return new Subnetv4(
       new IPv4(this.gateway.asInt - pow2(32 - this._bitMask)).asString +
-      '/' +
-      this._bitMask
+        '/' +
+        this._bitMask
     );
   }
 }

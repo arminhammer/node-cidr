@@ -264,3 +264,10 @@ ava('1.2.3.4/29 prev', test => {
 ava('1.2.3.4/29 next', test => {
   test.deepEqual(cidr123429.next, new Subnetv4('1.2.3.8/29'));
 });
+
+let cidr123432 = new Subnetv4('1.2.3.4/32');
+
+ava('1.2.3.4/32 includes', test => {
+  test.is(cidr123432.includes(new IPv4('1.2.3.4')), true);
+  test.is(cidr123432.includes(new IPv4('1.2.3.5')), false);
+});
