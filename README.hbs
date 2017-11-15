@@ -1,4 +1,4 @@
-[![view on npm](http://img.shields.io/npm/v/example.svg)](https://www.npmjs.org/package/example) 
+[![npm version](https://badge.fury.io/js/node-cidr.svg)](https://badge.fury.io/js/node-cidr)
 
 node-cidr is a Javascript library that makes it easy to manipulate IPs and Subnets. Currently only IPv4 is supported, but IPv6 support is planned for a future release. The library consists of two classes: IPv4 and Subnetv4. The IPv4 class allows you to manipulate IP addresses, while Subnetv4 allows you to manipulate subnets using CIDR notation.
 
