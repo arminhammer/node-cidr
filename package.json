@@ -1,11 +1,13 @@
 {
   "name": "node-cidr",
-  "version": "0.1.6",
-  "description": "[![view on npm](http://img.shields.io/npm/v/example.svg)](https://www.npmjs.org/package/example)",
+  "version": "0.1.7",
+  "description":
+    "[![view on npm](http://img.shields.io/npm/v/example.svg)](https://www.npmjs.org/package/example)",
   "main": "js/index.js",
   "types": "js/index.d.ts",
   "scripts": {
-    "test": "time tsc && nyc --cache --reporter=lcov ava --verbose && nyc report",
+    "test":
+      "time tsc && nyc --cache --reporter=lcov ava --verbose && nyc report",
     "docs": "jsdoc2md --template README.hbs --files js/index.js > README.md"
   },
   "keywords": [
@@ -29,12 +31,8 @@
     "typescript": "^2.2.1"
   },
   "ava": {
-    "files": [
-      "test/*.js"
-    ],
-    "source": [
-      "./js/**/*.{js,jsx}"
-    ],
+    "files": ["test/*.js"],
+    "source": ["./js/**/*.{js,jsx}"],
     "concurrency": 32,
     "failFast": true,
     "tap": false,
