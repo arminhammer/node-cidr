@@ -134,3 +134,9 @@ export declare class Subnetv4 {
      */
     readonly prev: Subnetv4;
 }
+declare const ipAddressToInt: (ipAddress: string) => number;
+declare const getIntCIDRRange: (cidrString: string) => number[];
+declare const intToIpAddress: (ipInt: number) => string;
+declare const getNarrowestCommonCidrFromIps: (ips: string[]) => string;
+declare const getNarrowestCommonCidrFromCidrs: (cidrs: string[]) => string;
+export { getIntCIDRRange, getNarrowestCommonCidrFromIps, getNarrowestCommonCidrFromCidrs, intToIpAddress, ipAddressToInt };

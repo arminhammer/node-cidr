@@ -1,10 +1,9 @@
 'use strict';
 
-const abs = Math.abs;
-
 function pow2(n: number): number {
-  if (n == 0) return 1;
-  return abs(2 << (n - 1));
+  return 2 ** n;
+  //if (n == 0) return 1;
+  //return abs(2 << (n - 1));
 }
 
 function octetsToInt(octets: number[]): number {
@@ -54,7 +53,7 @@ export class IPv4 {
 
   /**
    * The constructor expects a string in the format '192.168.0.1', or alternatively an integer.
-   * @param {string|number} input 
+   * @param {string|number} input
    */
   constructor(input: string | number) {
     this._octets = [];
@@ -104,8 +103,9 @@ export class IPv4 {
    * @returns {string}
    */
   get reverse(): string {
-    return `${this._octets[3]}.${this._octets[2]}.${this._octets[1]}.${this
-      ._octets[0]}.in-addr.arpa`;
+    return `${this._octets[3]}.${this._octets[2]}.${this._octets[1]}.${
+      this._octets[0]
+    }.in-addr.arpa`;
   }
 
   /**
@@ -160,7 +160,7 @@ export class Subnetv4 {
 
   /**
    * The constructor expects a string parameter that is a valid CIDR. For example, '10.0.0.0/16'.
-   * @param {string} input 
+   * @param {string} input
    */
   constructor(input: string) {
     let split = input.split('/');
@@ -255,7 +255,7 @@ export class Subnetv4 {
   /**
    * Returns all subnets within the subnet, given the bitmask parameter. For example, if you have a subnet s for '10.0.0.0/16', calling s.subnets('/24') will return all /24 subnets that are legal within 10.0.0.0/16. If you want to limit the number of subnets returned, add the second parameter: s.subnets('/24', 4) will return 4 subnets.
    * @param {string} bitmask
-   * @param {number} limit 
+   * @param {number} limit
    * @returns {Subnetv4[]}
    */
   subnets(bitmask: string, limit: number): Subnetv4[] {
@@ -338,3 +338,74 @@ export class Subnetv4 {
     );
   }
 }
+
+const ipAddressToInt = (ipAddress: string) =>
+  ipAddress
+    .split('.')
+    .reduce(
+      (p: number, c: string, i: number) => p + parseInt(c) * 256 ** (3 - i),
+      0
+    );
+
+const getIntCIDRRange = (cidrString: string): number[] => {
+  const [ip, mask] = cidrString.split('/');
+  const maskInt = parseInt(mask);
+  const ipInt = ipAddressToInt(ip);
+  const max = ip;
+  const range = 2 ** (32 - maskInt) - 1;
+  return [ipInt, ipInt + range];
+};
+
+const intToIpAddress = (ipInt: number): string => {
+  let remaining = ipInt;
+  let address = [];
+  for (let i = 0; i < 4; i++) {
+    if (remaining != 0) {
+      address.push(Math.floor(remaining / 256 ** (3 - i)));
+      remaining = remaining % 256 ** (3 - i);
+    } else {
+      address.push(0);
+    }
+  }
+  return address.join('.');
+};
+
+const getNarrowestCommonCidrFromIpInts = (ips: number[]): string => {
+  const ipInt = ips.sort();
+  let mask = 0;
+  const range = ipInt[ipInt.length - 1] - ipInt[0];
+  let baseIp = ipInt[0];
+  for (let i = 0; i <= 32; i++) {
+    mask = 32 - i;
+    const exp = 2 ** (32 - mask);
+    if (exp - 1 >= range) {
+      if (ipInt[0] % exp != 0) {
+        baseIp = ipInt[0] - ipInt[0] % exp;
+      }
+      if (ipInt[ipInt.length - 1] > baseIp + exp) {
+        mask--;
+      }
+      break;
+    }
+  }
+  return `${intToIpAddress(baseIp)}/${mask}`;
+};
+
+const getNarrowestCommonCidrFromIps = (ips: string[]): string => {
+  const ipInt = ips.map(ipAddressToInt);
+  return getNarrowestCommonCidrFromIpInts(ipInt);
+};
+
+const getNarrowestCommonCidrFromCidrs = (cidrs: string[]) => {
+  const ipMap = cidrs.map(x => getIntCIDRRange(x));
+  const ipInt = [].concat.apply([], ipMap).sort();
+  return getNarrowestCommonCidrFromIpInts(ipInt);
+};
+
+export {
+  getIntCIDRRange,
+  getNarrowestCommonCidrFromIps,
+  getNarrowestCommonCidrFromCidrs,
+  intToIpAddress,
+  ipAddressToInt
+};

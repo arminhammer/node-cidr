@@ -1,6 +1,6 @@
 {
   "name": "node-cidr",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description":
     "[![view on npm](http://img.shields.io/npm/v/example.svg)](https://www.npmjs.org/package/example)",
   "main": "js/index.js",
@@ -25,15 +25,15 @@
   "author": "Armin Graf",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ava": "^0.18.2",
-    "jsdoc-to-markdown": "^3.0.0",
-    "nyc": "^10.1.2",
+    "ava": "^0.25.0",
+    "jsdoc-to-markdown": "^4.0.1",
+    "nyc": "^11.6.0",
     "typescript": "^2.2.1"
   },
   "ava": {
     "files": ["test/*.js"],
     "source": ["./js/**/*.{js,jsx}"],
-    "concurrency": 32,
+    "concurrency": 4,
     "failFast": true,
     "tap": false,
     "powerAssert": false
