@@ -1,22 +1,17 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es2015",
-        "declaration": true,
-        "outDir": "./js",
-        "noImplicitReturns": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "noFallthroughCasesInSwitch": true,
-        "alwaysStrict": true,
-        "forceConsistentCasingInFileNames": true,
-        "pretty": true
-    },
-    "filesGlob": [
-        "./**/*.ts",
-        "!./node_modules/**/*.ts"
-    ],
-    "files": [
-        "./index.ts"
-    ]
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2015",
+    "declaration": true,
+    "outDir": "./dist",
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noFallthroughCasesInSwitch": true,
+    "alwaysStrict": true,
+    "forceConsistentCasingInFileNames": true,
+    "pretty": true
+  },
+  "filesGlob": ["./src/**/*.ts", "!./node_modules/**/*.ts"],
+  "files": ["./src/index.ts"]
 }
