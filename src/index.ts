@@ -21,6 +21,13 @@ const intCommonCidr = (ips: number[]): string => {
   return `${toString(baseIp)}/${mask}`;
 };
 
+const padLeft = (input: string, char: string, min: number): string => {
+  while (input.length < min) {
+    input = char + input;
+  }
+  return input;
+};
+
 // IP Address methods
 
 const toInt = (ipAddress: string) =>
@@ -50,10 +57,76 @@ const ipCommonCidr = (ips: string[]): string => {
   return intCommonCidr(ipInt);
 };
 
+const toOctets = (input: string): number[] =>
+  input.split('.').map(x => parseInt(x));
+
+/**
+ * Returns the reverse lookup hostname for the address.
+ * @returns {string}
+ */
+const reverse = (ip: string | number) => {
+  if (typeof ip === 'number') {
+    ip = toString(ip);
+  }
+  const octets = toOctets(ip);
+  return `${octets[3]}.${octets[2]}.${octets[1]}.${octets[0]}.in-addr.arpa`;
+};
+/**
+ * Returns the binary representation of the address, in string form.
+ * @returns {string}
+ */
+const toBinary = (ip: string): string => {
+  const octets = toOctets(ip);
+  let o = [];
+  for (let i = 0; i < 4; i++) {
+    o[i] = padLeft((octets[i] >>> 0).toString(2), '0', 8);
+  }
+  return `${o[0]}.${o[1]}.${o[2]}.${o[3]}`;
+};
+
+/**
+ * Provides the hex value of the address.
+ * @returns {string}
+ */
+const toHex = (ip: string): string => toInt(ip).toString(16);
+
+//TODO Return country code of IP
+/* get countryCode() {} */
+
+/**
+ * Returns the next adjacent address.
+ * @returns {string}
+ */
+const next = (): string => {
+  return ''; //new IPv4(this.asInt + 1);
+};
+
+/**
+ * Returns the previous adjacent address.
+ * @returns {string}
+ */
+const previous = (): string => {
+  return ''; //new IPv4(this.asInt - 1);
+};
+
+const toCidr = (ip: string | number) => {
+  if (typeof ip === 'number') {
+    ip = toString(ip);
+  }
+  return `${ip}/32`;
+};
+
 export const ip = {
   toInt,
   toString,
-  commonCidr: ipCommonCidr
+  commonCidr: ipCommonCidr,
+  toHex,
+  toOctets,
+  toBinary,
+  reverse,
+  previous,
+  next,
+  toCidr
 };
 
 // CIDR Methods
@@ -81,51 +154,36 @@ const cidrCommonCidr = (cidrs: string[]) => {
   const ipInt = [].concat.apply([], ipMap).sort();
   return intCommonCidr(ipInt);
 };
+
+const max = () => {};
+const min = () => {};
+const count = () => {};
+const netmask = () => {};
+const range = () => {};
+const wildcardmask = () => {};
+const gateway = () => {};
+const broadcast = () => {};
+const subnets = () => {};
+const ips = () => {};
+const includes = () => {};
+const nextCidr = () => {};
+const previousCidr = () => {};
+
 export const cidr = {
   toRange,
   toIntRange,
-  commonCidr: cidrCommonCidr
+  commonCidr: cidrCommonCidr,
+  max,
+  min,
+  count,
+  netmask,
+  range,
+  wildcardmask,
+  gateway,
+  broadcast,
+  subnets,
+  ips,
+  includes,
+  next: nextCidr,
+  previous: previousCidr
 };
-
-function pow2(n: number): number {
-  return 2 ** n;
-}
-
-function octetsToInt(octets: number[]): number {
-  return octets.reduce(function(acc, curr, idx) {
-    return acc + curr * pow2((3 - idx) * 8);
-  }, 0);
-}
-
-function octetsToString(octets: number[]): string {
-  return `${octets[0]}.${octets[1]}.${octets[2]}.${octets[3]}`;
-}
-
-function stringToOctets(input: string): number[] {
-  let octets: number[] = [];
-  input.split('.').forEach(octet => {
-    octets.push(parseInt(octet));
-  });
-  return octets;
-}
-
-function intToOctets(input: number, limit: number): number[] {
-  let octets: number[] = [];
-  for (let i = 0; i <= limit; i++) {
-    let divider = pow2((limit - i) * 8);
-    let result = 0;
-    if (input >= divider) {
-      result = input / divider;
-    }
-    octets[i] = Math.trunc(result);
-    input = input % pow2((limit - i) * 8);
-  }
-  return octets;
-}
-
-function padLeft(input: string, char: string, min: number): string {
-  while (input.length < min) {
-    input = char + input;
-  }
-  return input;
-}
