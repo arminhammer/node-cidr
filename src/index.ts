@@ -121,6 +121,8 @@ const toCidr = (ip: string | number) => {
   return `${ip}/32`;
 };
 
+const validateIp = () => {};
+
 export const ip = {
   toInt,
   toString,
@@ -131,7 +133,8 @@ export const ip = {
   reverse,
   previous,
   next,
-  toCidr
+  toCidr,
+  validate: validateIp
 };
 
 // CIDR Methods
@@ -164,32 +167,45 @@ const cidrCommonCidr = (cidrs: string[]) => {
   return intCommonCidr(ipInt);
 };
 
-const netmask = (ip: string) => {
-  let result = 0;
-  let count = mask(ip);
-  while (count > 0) {
-    result += 2 ** (32 - count);
-    count--;
+const netmask = (cidr: string) => toString(2 ** 32 - 2 ** (32 - mask(cidr)));
+
+const gateway = (cidr: string) => {
+  console.log('range', toRange(cidr));
+  let mask = this.wildcardmask.octets;
+  let result = [];
+  for (let i = 0; i < this._ip.octets.length; i++) {
+    if (this.wildcardmask.octets[i] > this._ip.octets[i]) {
+      result[i] = 0;
+    } else {
+      result[i] = this._ip.octets[i];
+    }
   }
-  return toString(result);
+  return `${result[0]}.${result[1]}.${result[2]}.${result[3]}`;
+};
+
+const broadcast = (cidr: string) => {
+  let initial = toInt(address(cidr));
+  let add = 2 ** (32 - mask(cidr)) - 1;
+  return toString(initial + add);
 };
 
 const max = () => {};
 const min = () => {};
 const count = () => {};
+const usable = () => {};
 const range = () => {};
 const wildcardmask = () => {};
-const gateway = () => {};
-const broadcast = () => {};
 const subnets = () => {};
 const ips = () => {};
 const includes = () => {};
 const nextCidr = () => {};
 const previousCidr = () => {};
 const random = () => {};
+const validateCidr = () => {};
 
 export const cidr = {
   toRange,
+  usable,
   toIntRange,
   commonCidr: cidrCommonCidr,
   max,
@@ -207,5 +223,6 @@ export const cidr = {
   next: nextCidr,
   previous: previousCidr,
   address,
-  mask
+  mask,
+  validate: validateCidr
 };

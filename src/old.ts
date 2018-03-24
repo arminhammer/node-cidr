@@ -229,18 +229,7 @@ export class Subnetv4 {
    * Returns the gateway address for the subnet.
    * @returns {IPv4}
    */
-  get gateway(): IPv4 {
-    let mask = this.wildcardmask.octets;
-    let result = [];
-    for (let i = 0; i < this._ip.octets.length; i++) {
-      if (this.wildcardmask.octets[i] > this._ip.octets[i]) {
-        result[i] = 0;
-      } else {
-        result[i] = this._ip.octets[i];
-      }
-    }
-    return new IPv4(`${result[0]}.${result[1]}.${result[2]}.${result[3]}`);
-  }
+  get gateway(): IPv4 {}
 
   /**
    * Returns the broadcast address for the subnet

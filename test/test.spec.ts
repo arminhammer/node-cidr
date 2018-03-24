@@ -189,6 +189,24 @@ describe('cidr', function() {
         '10.255.255.255'
       ]);
     });
+
+    it('10.1.0.0/16 should result in [10.1.0.0, 10.1.255.255]', function() {
+      expect(cidr.cidr.toRange('10.1.0.0/16')).to.eql([
+        '10.1.0.0',
+        '10.1.255.255'
+      ]);
+    });
+
+    it('10.1.0.0/17 should result in [10.1.0.0, 10.1.127.255]', function() {
+      expect(cidr.cidr.toRange('10.1.0.0/17')).to.eql([
+        '10.1.0.0',
+        '10.1.127.255'
+      ]);
+    });
+
+    it('1.2.3.0/29 should result in [1.2.3.0, 1.2.3.7]', function() {
+      expect(cidr.cidr.toRange('1.2.3.0/29')).to.eql(['1.2.3.0', '1.2.3.7']);
+    });
   });
 
   describe('netmask', function() {
@@ -202,6 +220,220 @@ describe('cidr', function() {
 
     it('1.2.3.4/29 should result in 255.255.255.248', function() {
       expect(cidr.cidr.netmask('1.2.3.4/29')).to.equal('255.255.255.248');
+    });
+  });
+
+  describe('broadcast', function() {
+    it('10.0.0.0/16 should result in 10.1.255.255', function() {
+      expect(cidr.cidr.broadcast('10.0.0.0/16')).to.equal('10.1.255.255');
+    });
+
+    it('10.0.0.0/17 should result in 10.1.127.255', function() {
+      expect(cidr.cidr.broadcast('10.0.0.0/17')).to.equal('10.1.127.255');
+    });
+
+    it('1.2.3.4/29 should result in 1.2.3.7', function() {
+      expect(cidr.cidr.broadcast('1.2.3.4/29')).to.equal('1.2.3.7');
+    });
+  });
+
+  describe('wildcardmask', function() {
+    it('10.0.0.0/16 should result in 10.1.0.0', function() {
+      expect(cidr.cidr.wildcardmask('10.0.0.0/16')).to.equal('0.0.255.255');
+    });
+
+    it('10.0.0.0/17 should result in 10.1.0.0', function() {
+      expect(cidr.cidr.wildcardmask('10.0.0.0/17')).to.equal('0.0.127.255');
+    });
+
+    it('1.2.3.4/29 should result in 0.0.0.7', function() {
+      expect(cidr.cidr.wildcardmask('1.2.3.4/29')).to.equal('0.0.0.7');
+    });
+  });
+
+  describe('min', function() {
+    it('10.0.0.0/16 should result in 10.0.255.255', function() {
+      expect(cidr.cidr.min('10.0.0.0/16')).to.equal('10.0.0.0');
+    });
+
+    it('10.0.0.0/17 should result in 10.1.127.255', function() {
+      expect(cidr.cidr.min('10.0.0.0/17')).to.equal('10.0.0.0');
+    });
+
+    it('1.2.3.0/29 should result in 0.0.0.7', function() {
+      expect(cidr.cidr.min('1.2.3.0/29')).to.equal('1.2.3.0');
+    });
+  });
+
+  describe('max', function() {
+    it('10.0.0.0/16 should result in 10.0.255.255', function() {
+      expect(cidr.cidr.max('10.0.0.0/16')).to.equal('10.0.255.255');
+    });
+
+    it('10.0.0.0/17 should result in 10.1.127.255', function() {
+      expect(cidr.cidr.max('10.0.0.0/17')).to.equal('10.1.127.255');
+    });
+
+    it('1.2.3.0/29 should result in 0.0.0.7', function() {
+      expect(cidr.cidr.max('1.2.3.0/29')).to.equal('1.2.3.7');
+    });
+  });
+
+  describe('count', function() {
+    it('10.0.0.0/16 should result in 65536', function() {
+      expect(cidr.cidr.count('10.0.0.0/16')).to.equal(65536);
+    });
+
+    it('10.0.0.0/17 should result in 32768', function() {
+      expect(cidr.cidr.count('10.0.0.0/17')).to.equal(32768);
+    });
+
+    it('1.2.3.0/29 should result in 8', function() {
+      expect(cidr.cidr.count('1.2.3.0/29')).to.equal(8);
+    });
+  });
+
+  describe('previous', function() {
+    it('10.0.0.0/16 should result in 65536', function() {
+      expect(cidr.cidr.previous('10.0.0.0/16')).to.equal(65536);
+    });
+
+    it('10.0.0.0/17 should result in 32768', function() {
+      expect(cidr.cidr.previous('10.0.0.0/17')).to.equal(32768);
+    });
+
+    it('1.2.3.0/29 should result in 8', function() {
+      expect(cidr.cidr.previous('1.2.3.0/29')).to.equal(8);
+    });
+
+    /*
+ava('10.1.0.0/16 prev', test => {
+  test.deepEqual(cidr1010016.prev, new Subnetv4('10.0.0.0/16'));
+});
+
+ava('10.1.0.0/17 prev', test => {
+  test.deepEqual(cidr1010017.prev, new Subnetv4('10.0.128.0/17'));
+});
+
+ava('1.2.3.4/29 prev', test => {
+  test.deepEqual(cidr123429.prev, new Subnetv4('1.2.2.248/29'));
+});
+*/
+  });
+
+  describe('next', function() {
+    it('10.0.0.0/16 should result in 65536', function() {
+      expect(cidr.cidr.next('10.0.0.0/16')).to.equal(65536);
+    });
+
+    it('10.0.0.0/17 should result in 32768', function() {
+      expect(cidr.cidr.next('10.0.0.0/17')).to.equal(32768);
+    });
+
+    it('1.2.3.0/29 should result in 8', function() {
+      expect(cidr.cidr.next('1.2.3.0/29')).to.equal(8);
+    });
+    /*
+ava('10.1.0.0/16 next', test => {
+  test.deepEqual(cidr1010016.next, new Subnetv4('10.2.0.0/16'));
+});
+
+ava('10.1.0.0/16 next next', test => {
+  test.deepEqual(cidr1010016.next.next, new Subnetv4('10.3.0.0/16'));
+});
+
+ava('10.1.0.0/17 next', test => {
+  test.deepEqual(cidr1010017.next, new Subnetv4('10.1.128.0/17'));
+});
+
+ava('1.2.3.4/29 next', test => {
+  test.deepEqual(cidr123429.next, new Subnetv4('1.2.3.8/29'));
+});
+
+*/
+  });
+
+  describe('subnets', function() {
+    it('10.0.0.0/16 should result in 65536', function() {
+      expect(cidr.cidr.subnets('10.0.0.0/16')).to.equal(65536);
+    });
+
+    it('10.0.0.0/17 should result in 32768', function() {
+      expect(cidr.cidr.subnets('10.0.0.0/17')).to.equal(32768);
+    });
+
+    it('1.2.3.0/29 should result in 8', function() {
+      expect(cidr.cidr.subnets('1.2.3.0/29')).to.equal(8);
+    });
+
+    /*
+      ava('10.1.0.0/16 /16', test => {
+        test.is(cidr1010016.subnets('/16').length, 1);
+      });
+      
+      ava('10.1.0.0/16 /18', test => {
+        test.is(cidr1010016.subnets('/18').length, 4);
+        test.is(cidr1010016.subnets('/18', 2).length, 2);
+      });
+      
+      ava('10.1.0.0/16 /24', test => {
+        test.is(cidr1010016.subnets('/24').length, 256);
+        test.is(cidr1010016.subnets('/24', 2).length, 2);
+      });
+      
+      ava('10.1.0.0/16 /30', test => {
+        test.is(cidr1010016.subnets('/30').length, 16384);
+      });
+      
+      ava('10.1.0.0/17 /18', test => {
+        test.is(cidr1010017.subnets('/18').length, 2);
+      });
+      
+      ava('10.1.0.0/17 /24', test => {
+        test.is(cidr1010017.subnets('/24').length, 128);
+        test.is(cidr1010017.subnets('/24', 2).length, 2);
+      });
+      
+      ava('10.1.0.0/17 /30', test => {
+        test.is(cidr1010017.subnets('/30').length, 8192);
+        test.is(cidr1010017.subnets('/30', 4).length, 4);
+      });
+      
+      ava('1.2.3.4/29 /30', test => {
+        test.is(cidr123429.subnets('/30')[0].asString, '1.2.3.4/30');
+      });
+    */
+  });
+
+  describe('includes', function() {
+    it('10.0.0.0/16 should result in 65536', function() {
+      expect(cidr.cidr.includes('10.0.0.0/16')).to.equal(65536);
+      expect(cidr.cidr.includes('10.0.0.0/16')).to.equal(65536);
+    });
+
+    it('10.0.0.0/17 should result in 32768', function() {
+      expect(cidr.cidr.includes('10.0.0.0/17')).to.equal(32768);
+      expect(cidr.cidr.includes('10.0.0.0/16')).to.equal(65536);
+    });
+
+    it('1.2.3.0/29 should result in 8', function() {
+      expect(cidr.cidr.includes('1.2.3.0/29')).to.equal(8);
+      expect(cidr.cidr.includes('10.0.0.0/16')).to.equal(65536);
+    });
+  });
+
+  describe('ips', function() {
+    it('Ip List', function() {
+      expect(cidr.cidr.ips('1.2.3.0/29')).to.eql([
+        '1.2.3.0',
+        '1.2.3.1',
+        '1.2.3.2',
+        '1.2.3.3',
+        '1.2.3.4',
+        '1.2.3.5',
+        '1.2.3.6',
+        '1.2.3.7'
+      ]);
     });
   });
 
@@ -249,183 +481,3 @@ describe('cidr', function() {
     });
   });
 });
-
-/*
-let cidr1010016 = new Subnetv4('10.1.0.0/16');
-
-ava('10.1.0.0/16 /16', test => {
-  test.is(cidr1010016.subnets('/16').length, 1);
-});
-
-ava('10.1.0.0/16 /18', test => {
-  test.is(cidr1010016.subnets('/18').length, 4);
-  test.is(cidr1010016.subnets('/18', 2).length, 2);
-});
-
-ava('10.1.0.0/16 /24', test => {
-  test.is(cidr1010016.subnets('/24').length, 256);
-  test.is(cidr1010016.subnets('/24', 2).length, 2);
-});
-
-ava('10.1.0.0/16 /30', test => {
-  test.is(cidr1010016.subnets('/30').length, 16384);
-});
-
-ava('10.1.0.0/16 count', test => {
-  test.is(cidr1010016.count, 65536);
-});
-
-
-ava('10.1.0.0/16 gateway', test => {
-  test.deepEqual(cidr1010016.gateway, new IPv4('10.1.0.0'));
-});
-
-ava('10.1.0.0/16 max', test => {
-  test.deepEqual(cidr1010016.max, new IPv4('10.1.255.255'));
-});
-
-ava('10.1.0.0/16 includes', test => {
-  test.is(cidr1010016.includes(new IPv4('10.1.120.1')), true);
-  test.is(cidr1010016.includes(new IPv4('192.168.0.5')), false);
-});
-
-ava('10.1.0.0/16 broadcast', test => {
-  test.deepEqual(cidr1010016.broadcast, new IPv4('10.1.255.255'));
-});
-
-ava('10.1.0.0/16 range', test => {
-  test.deepEqual(cidr1010016.range, [
-    new IPv4('10.1.0.0'),
-    new IPv4('10.1.255.255')
-  ]);
-});
-
-ava('10.1.0.0/16 prev', test => {
-  test.deepEqual(cidr1010016.prev, new Subnetv4('10.0.0.0/16'));
-});
-
-ava('10.1.0.0/16 next', test => {
-  test.deepEqual(cidr1010016.next, new Subnetv4('10.2.0.0/16'));
-});
-
-ava('10.1.0.0/16 next next', test => {
-  test.deepEqual(cidr1010016.next.next, new Subnetv4('10.3.0.0/16'));
-});
-
-let cidr1010017 = new Subnetv4('10.1.0.0/17');
-
-ava('10.1.0.0/17 /18', test => {
-  test.is(cidr1010017.subnets('/18').length, 2);
-});
-
-ava('10.1.0.0/17 /24', test => {
-  test.is(cidr1010017.subnets('/24').length, 128);
-  test.is(cidr1010017.subnets('/24', 2).length, 2);
-});
-
-ava('10.1.0.0/17 /30', test => {
-  test.is(cidr1010017.subnets('/30').length, 8192);
-  test.is(cidr1010017.subnets('/30', 4).length, 4);
-});
-
-ava('10.1.0.0/17 count', test => {
-  test.is(cidr1010017.count, 32768);
-});
-
-
-ava('10.1.0.0/17 includes', test => {
-  test.is(cidr1010017.includes(new IPv4('10.1.120.1')), true);
-  test.is(cidr1010017.includes(new IPv4('192.168.0.5')), false);
-});
-
-ava('10.1.0.0/17 gateway', test => {
-  test.deepEqual(cidr1010017.gateway, new IPv4('10.1.0.0'));
-});
-
-ava('10.1.0.0/17 max', test => {
-  test.deepEqual(cidr1010017.max, new IPv4('10.1.127.255'));
-});
-
-ava('10.1.0.0/17 broadcast', test => {
-  test.deepEqual(cidr1010017.broadcast, new IPv4('10.1.127.255'));
-});
-
-ava('10.1.0.0/17 range', test => {
-  test.deepEqual(cidr1010017.range, [
-    new IPv4('10.1.0.0'),
-    new IPv4('10.1.127.255')
-  ]);
-});
-
-ava('10.1.0.0/17 prev', test => {
-  test.deepEqual(cidr1010017.prev, new Subnetv4('10.0.128.0/17'));
-});
-
-ava('10.1.0.0/17 next', test => {
-  test.deepEqual(cidr1010017.next, new Subnetv4('10.1.128.0/17'));
-});
-
-let cidr123429 = new Subnetv4('1.2.3.4/29');
-
-ava('1.2.3.4/29 /30', test => {
-  test.is(cidr123429.subnets('/30')[0].asString, '1.2.3.4/30');
-});
-
-ava('1.2.3.4/29 count', test => {
-  test.is(cidr123429.count, 8);
-});
-
-ava('1.2.3.4/29 ipList', test => {
-  test.deepEqual(cidr123429.ipList, [
-    new IPv4('1.2.3.0'),
-    new IPv4('1.2.3.1'),
-    new IPv4('1.2.3.2'),
-    new IPv4('1.2.3.3'),
-    new IPv4('1.2.3.4'),
-    new IPv4('1.2.3.5'),
-    new IPv4('1.2.3.6'),
-    new IPv4('1.2.3.7')
-  ]);
-});
-
-
-ava('1.2.3.4/29 wildcardmask', test => {
-  test.is(cidr123429.wildcardmask.asString, '0.0.0.7');
-});
-
-ava('1.2.3.4/29 includes', test => {
-  test.is(cidr123429.includes(new IPv4('1.2.3.4')), true);
-  test.is(cidr123429.includes(new IPv4('192.168.0.5')), false);
-});
-
-ava('1.2.3.4/29 gateway', test => {
-  test.deepEqual(cidr123429.gateway, new IPv4('1.2.3.0'));
-});
-
-ava('1.2.3.4/29 max', test => {
-  test.deepEqual(cidr123429.max, new IPv4('1.2.3.7'));
-});
-
-ava('1.2.3.4/29 broadcast', test => {
-  test.deepEqual(cidr123429.broadcast, new IPv4('1.2.3.7'));
-});
-
-ava('1.2.3.4/29 range', test => {
-  test.deepEqual(cidr123429.range, [new IPv4('1.2.3.0'), new IPv4('1.2.3.7')]);
-});
-
-ava('1.2.3.4/29 prev', test => {
-  test.deepEqual(cidr123429.prev, new Subnetv4('1.2.2.248/29'));
-});
-
-ava('1.2.3.4/29 next', test => {
-  test.deepEqual(cidr123429.next, new Subnetv4('1.2.3.8/29'));
-});
-
-let cidr123432 = new Subnetv4('1.2.3.4/32');
-
-ava('1.2.3.4/32 includes', test => {
-  test.is(cidr123432.includes(new IPv4('1.2.3.4')), true);
-  test.is(cidr123432.includes(new IPv4('1.2.3.5')), false);
-});
-*/
