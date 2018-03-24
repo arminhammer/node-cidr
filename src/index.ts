@@ -57,8 +57,12 @@ const ipCommonCidr = (ips: string[]): string => {
   return intCommonCidr(ipInt);
 };
 
-const toOctets = (input: string): number[] =>
-  input.split('.').map(x => parseInt(x));
+const toOctets = (input: string | number): number[] => {
+  if (typeof input === 'number') {
+    input = toString(input);
+  }
+  return input.split('.').map(x => parseInt(x));
+};
 
 /**
  * Returns the reverse lookup hostname for the address.
@@ -75,7 +79,7 @@ const reverse = (ip: string | number) => {
  * Returns the binary representation of the address, in string form.
  * @returns {string}
  */
-const toBinary = (ip: string): string => {
+const toBinary = (ip: string | number): string => {
   const octets = toOctets(ip);
   let o = [];
   for (let i = 0; i < 4; i++) {
@@ -88,7 +92,12 @@ const toBinary = (ip: string): string => {
  * Provides the hex value of the address.
  * @returns {string}
  */
-const toHex = (ip: string): string => toInt(ip).toString(16);
+const toHex = (ip: string | number): string => {
+  if (typeof ip === 'string') {
+    ip = toInt(ip);
+  }
+  return ip.toString(16);
+};
 
 //TODO Return country code of IP
 /* get countryCode() {} */
@@ -127,6 +136,10 @@ export const ip = {
 
 // CIDR Methods
 
+const address = (ip: string): string => ip.split('/')[0];
+
+const mask = (ip: string): number => parseInt(ip.split('/')[1]);
+
 const toIntRange = (cidrString: string): number[] => {
   const [ip, mask] = cidrString.split('/');
   const maskInt = parseInt(mask);
@@ -151,10 +164,19 @@ const cidrCommonCidr = (cidrs: string[]) => {
   return intCommonCidr(ipInt);
 };
 
+const netmask = (ip: string) => {
+  let result = 0;
+  let count = mask(ip);
+  while (count > 0) {
+    result += 2 ** (32 - count);
+    count--;
+  }
+  return toString(result);
+};
+
 const max = () => {};
 const min = () => {};
 const count = () => {};
-const netmask = () => {};
 const range = () => {};
 const wildcardmask = () => {};
 const gateway = () => {};
@@ -183,5 +205,7 @@ export const cidr = {
   includes,
   random,
   next: nextCidr,
-  previous: previousCidr
+  previous: previousCidr,
+  address,
+  mask
 };

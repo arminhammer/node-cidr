@@ -44,6 +44,14 @@ describe('ip', function() {
     it('72.21.196.65', function() {
       expect(cidr.ip.toHex('72.21.196.65')).to.equal('4815c441');
     });
+
+    it('1209386049', function() {
+      expect(cidr.ip.toHex(1209386049)).to.equal('4815c441');
+    });
+
+    it('10.0.255.255', function() {
+      expect(cidr.ip.toHex('10.0.255.255')).to.equal('a00ffff');
+    });
   });
 
   describe('toCidr', function() {
@@ -63,6 +71,18 @@ describe('ip', function() {
   describe('toBinary', function() {
     it('72.21.196.65', function() {
       expect(cidr.ip.toBinary('72.21.196.65')).to.equal(
+        '01001000.00010101.11000100.01000001'
+      );
+    });
+
+    it('10.0.255.255', function() {
+      expect(cidr.ip.toBinary('10.0.255.255')).to.equal(
+        '00001010.00000000.11111111.11111111'
+      );
+    });
+
+    it('1209386049', function() {
+      expect(cidr.ip.toBinary(1209386049)).to.equal(
         '01001000.00010101.11000100.01000001'
       );
     });
@@ -144,6 +164,18 @@ describe('ip', function() {
 });
 
 describe('cidr', function() {
+  describe('address', function() {
+    it('10.0.0.0/8 should be 10.0.0.0', function() {
+      expect(cidr.cidr.address('10.0.0.0/8')).to.equal('10.0.0.0');
+    });
+  });
+
+  describe('mask', function() {
+    it('10.0.0.0/8 should be 8', function() {
+      expect(cidr.cidr.mask('10.0.0.0/8')).to.equal(8);
+    });
+  });
+
   describe('toIntRange', function() {
     it('10.0.0.0/8 should result in [167772160, 184549375]', function() {
       expect(cidr.cidr.toIntRange('10.0.0.0/8')).to.eql([167772160, 184549375]);
@@ -156,6 +188,20 @@ describe('cidr', function() {
         '10.0.0.0',
         '10.255.255.255'
       ]);
+    });
+  });
+
+  describe('netmask', function() {
+    it('10.0.0.0/16 should result in 255.255.0.0', function() {
+      expect(cidr.cidr.netmask('10.0.0.0/16')).to.equal('255.255.0.0');
+    });
+
+    it('10.0.0.0/17 should result in 255.255.128.0', function() {
+      expect(cidr.cidr.netmask('10.0.0.0/17')).to.equal('255.255.128.0');
+    });
+
+    it('1.2.3.4/29 should result in 255.255.255.248', function() {
+      expect(cidr.cidr.netmask('1.2.3.4/29')).to.equal('255.255.255.248');
     });
   });
 
@@ -205,51 +251,6 @@ describe('cidr', function() {
 });
 
 /*
-
-let ip722119665 = new IPv4('72.21.196.65');
-
-ava('72.21.196.65 asInt', test => {
-  test.is(ip722119665.asInt, 1209386049);
-});
-
-
-ava('72.21.196.65 asHex', test => {
-  test.is(ip722119665.asHex, '4815c441');
-});
-
-
-let ip1209386049 = new IPv4(1209386049);
-
-ava('1209386049 asInt', test => {
-  test.is(ip1209386049.asInt, 1209386049);
-});
-
-
-ava('1209386049 asHex', test => {
-  test.is(ip1209386049.asHex, '4815c441');
-});
-
-
-ava('1209386049 asBinary', test => {
-  test.is(ip1209386049.asBinary, '01001000.00010101.11000100.01000001');
-});
-
-let ip100255255 = new IPv4('10.0.255.255');
-
-ava('10.0.255.255 asInt', test => {
-  test.is(ip100255255.asInt, 167837695);
-});
-
-
-ava('10.0.255.255 asHex', test => {
-  test.is(ip100255255.asHex, 'a00ffff');
-});
-
-
-ava('10.0.255.255 asBinary', test => {
-  test.is(ip100255255.asBinary, '00001010.00000000.11111111.11111111');
-});
-
 let cidr1010016 = new Subnetv4('10.1.0.0/16');
 
 ava('10.1.0.0/16 /16', test => {
@@ -274,9 +275,6 @@ ava('10.1.0.0/16 count', test => {
   test.is(cidr1010016.count, 65536);
 });
 
-ava('10.1.0.0/16 netmask', test => {
-  test.is(cidr1010016.netmask.asString, '255.255.0.0');
-});
 
 ava('10.1.0.0/16 gateway', test => {
   test.deepEqual(cidr1010016.gateway, new IPv4('10.1.0.0'));
@@ -334,9 +332,6 @@ ava('10.1.0.0/17 count', test => {
   test.is(cidr1010017.count, 32768);
 });
 
-ava('10.1.0.0/17 netmask', test => {
-  test.is(cidr1010017.netmask.asString, '255.255.128.0');
-});
 
 ava('10.1.0.0/17 includes', test => {
   test.is(cidr1010017.includes(new IPv4('10.1.120.1')), true);
@@ -393,9 +388,6 @@ ava('1.2.3.4/29 ipList', test => {
   ]);
 });
 
-ava('1.2.3.4/29 netmask', test => {
-  test.is(cidr123429.netmask.asString, '255.255.255.248');
-});
 
 ava('1.2.3.4/29 wildcardmask', test => {
   test.is(cidr123429.wildcardmask.asString, '0.0.0.7');
