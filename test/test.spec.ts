@@ -68,6 +68,18 @@ describe('ip', function() {
     });
   });
 
+  describe('next', function() {
+    it('72.21.196.65', function() {
+      expect(cidr.ip.next('72.21.196.65')).to.equal('72.21.196.66');
+    });
+  });
+
+  describe('previous', function() {
+    it('72.21.196.65', function() {
+      expect(cidr.ip.previous('72.21.196.65')).to.equal('72.21.196.64');
+    });
+  });
+
   describe('reverse', function() {
     it('72.21.196.65', function() {
       expect(cidr.ip.reverse('72.21.196.65')).to.equal(
@@ -193,6 +205,7 @@ describe('cidr', function() {
 });
 
 /*
+
 let ip722119665 = new IPv4('72.21.196.65');
 
 ava('72.21.196.65 asInt', test => {
@@ -204,14 +217,6 @@ ava('72.21.196.65 asHex', test => {
   test.is(ip722119665.asHex, '4815c441');
 });
 
-
-ava('72.21.196.65 next', test => {
-  test.is(ip722119665.next.asString, '72.21.196.66');
-});
-
-ava('72.21.196.65 prev', test => {
-  test.is(ip722119665.prev.asString, '72.21.196.64');
-});
 
 let ip1209386049 = new IPv4(1209386049);
 

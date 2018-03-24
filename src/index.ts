@@ -97,17 +97,13 @@ const toHex = (ip: string): string => toInt(ip).toString(16);
  * Returns the next adjacent address.
  * @returns {string}
  */
-const next = (): string => {
-  return ''; //new IPv4(this.asInt + 1);
-};
+const next = (ip: string): string => toString(toInt(ip) + 1);
 
 /**
  * Returns the previous adjacent address.
  * @returns {string}
  */
-const previous = (): string => {
-  return ''; //new IPv4(this.asInt - 1);
-};
+const previous = (ip: string): string => toString(toInt(ip) - 1);
 
 const toCidr = (ip: string | number) => {
   if (typeof ip === 'number') {
@@ -168,6 +164,7 @@ const ips = () => {};
 const includes = () => {};
 const nextCidr = () => {};
 const previousCidr = () => {};
+const random = () => {};
 
 export const cidr = {
   toRange,
@@ -184,6 +181,7 @@ export const cidr = {
   subnets,
   ips,
   includes,
+  random,
   next: nextCidr,
   previous: previousCidr
 };
