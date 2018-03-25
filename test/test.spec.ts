@@ -180,11 +180,22 @@ describe('cidr', function() {
     it('10.0.0.0/8 should result in [167772160, 184549375]', function() {
       expect(cidr.cidr.toIntRange('10.0.0.0/8')).to.eql([167772160, 184549375]);
     });
+
+    it('10.0.0.2/8 should result in [167772160, 184549375]', function() {
+      expect(cidr.cidr.toIntRange('10.0.0.2/8')).to.eql([167772160, 184549375]);
+    });
   });
 
   describe('toRange', function() {
     it('10.0.0.0/8 should result in [10.0.0.0, 10.255.255.255]', function() {
       expect(cidr.cidr.toRange('10.0.0.0/8')).to.eql([
+        '10.0.0.0',
+        '10.255.255.255'
+      ]);
+    });
+
+    it('10.0.0.2/8 should result in [10.0.0.0, 10.255.255.255]', function() {
+      expect(cidr.cidr.toRange('10.0.0.2/8')).to.eql([
         '10.0.0.0',
         '10.255.255.255'
       ]);
@@ -207,6 +218,17 @@ describe('cidr', function() {
     it('1.2.3.0/29 should result in [1.2.3.0, 1.2.3.7]', function() {
       expect(cidr.cidr.toRange('1.2.3.0/29')).to.eql(['1.2.3.0', '1.2.3.7']);
     });
+
+    it('1.2.3.4/29 should result in [1.2.3.0, 1.2.3.7]', function() {
+      expect(cidr.cidr.toRange('1.2.3.4/29')).to.eql(['1.2.3.0', '1.2.3.7']);
+    });
+
+    it('10.0.0.1/16 should result in [10.0.0.0, 10.0.255.255]', function() {
+      expect(cidr.cidr.toRange('10.0.0.1/16')).to.eql([
+        '10.0.0.0',
+        '10.0.255.255'
+      ]);
+    });
   });
 
   describe('netmask', function() {
@@ -225,11 +247,11 @@ describe('cidr', function() {
 
   describe('broadcast', function() {
     it('10.0.0.0/16 should result in 10.1.255.255', function() {
-      expect(cidr.cidr.broadcast('10.0.0.0/16')).to.equal('10.1.255.255');
+      expect(cidr.cidr.broadcast('10.0.0.0/16')).to.equal('10.0.255.255');
     });
 
-    it('10.0.0.0/17 should result in 10.1.127.255', function() {
-      expect(cidr.cidr.broadcast('10.0.0.0/17')).to.equal('10.1.127.255');
+    it('10.1.0.0/17 should result in 10.1.127.255', function() {
+      expect(cidr.cidr.broadcast('10.1.0.0/17')).to.equal('10.1.127.255');
     });
 
     it('1.2.3.4/29 should result in 1.2.3.7', function() {
@@ -238,11 +260,11 @@ describe('cidr', function() {
   });
 
   describe('wildcardmask', function() {
-    it('10.0.0.0/16 should result in 10.1.0.0', function() {
+    it('10.0.0.0/16 should result in 0.0.255.255', function() {
       expect(cidr.cidr.wildcardmask('10.0.0.0/16')).to.equal('0.0.255.255');
     });
 
-    it('10.0.0.0/17 should result in 10.1.0.0', function() {
+    it('10.0.0.0/17 should result in 0.0.127.255', function() {
       expect(cidr.cidr.wildcardmask('10.0.0.0/17')).to.equal('0.0.127.255');
     });
 
@@ -252,16 +274,20 @@ describe('cidr', function() {
   });
 
   describe('min', function() {
-    it('10.0.0.0/16 should result in 10.0.255.255', function() {
+    it('10.0.0.0/16 should result in 10.0.0.0', function() {
       expect(cidr.cidr.min('10.0.0.0/16')).to.equal('10.0.0.0');
     });
 
-    it('10.0.0.0/17 should result in 10.1.127.255', function() {
+    it('10.0.0.0/17 should result in 10.0.0.0', function() {
       expect(cidr.cidr.min('10.0.0.0/17')).to.equal('10.0.0.0');
     });
 
-    it('1.2.3.0/29 should result in 0.0.0.7', function() {
+    it('1.2.3.0/29 should result in 1.2.3.0', function() {
       expect(cidr.cidr.min('1.2.3.0/29')).to.equal('1.2.3.0');
+    });
+
+    it('1.2.3.4/29 should result in 1.2.3.0', function() {
+      expect(cidr.cidr.min('1.2.3.4/29')).to.equal('1.2.3.0');
     });
   });
 
@@ -270,12 +296,16 @@ describe('cidr', function() {
       expect(cidr.cidr.max('10.0.0.0/16')).to.equal('10.0.255.255');
     });
 
-    it('10.0.0.0/17 should result in 10.1.127.255', function() {
-      expect(cidr.cidr.max('10.0.0.0/17')).to.equal('10.1.127.255');
+    it('10.0.0.0/17 should result in 10.0.127.255', function() {
+      expect(cidr.cidr.max('10.0.0.0/17')).to.equal('10.0.127.255');
     });
 
     it('1.2.3.0/29 should result in 0.0.0.7', function() {
       expect(cidr.cidr.max('1.2.3.0/29')).to.equal('1.2.3.7');
+    });
+
+    it('1.2.3.4/29 should result in 1.2.3.7', function() {
+      expect(cidr.cidr.max('1.2.3.4/29')).to.equal('1.2.3.7');
     });
   });
 
@@ -294,131 +324,92 @@ describe('cidr', function() {
   });
 
   describe('previous', function() {
-    it('10.0.0.0/16 should result in 65536', function() {
-      expect(cidr.cidr.previous('10.0.0.0/16')).to.equal(65536);
+    it('10.1.0.0/16 should result in 10.1.0.0/16', function() {
+      expect(cidr.cidr.previous('10.1.0.0/16')).to.equal('10.0.0.0/16');
     });
 
-    it('10.0.0.0/17 should result in 32768', function() {
-      expect(cidr.cidr.previous('10.0.0.0/17')).to.equal(32768);
+    it('10.1.0.0/17 should result in 10.0.0.0/17', function() {
+      expect(cidr.cidr.previous('10.1.0.0/17')).to.equal('10.0.128.0/17');
     });
 
-    it('1.2.3.0/29 should result in 8', function() {
-      expect(cidr.cidr.previous('1.2.3.0/29')).to.equal(8);
+    it('1.2.3.0/29 should result in 1.2.2.248/29', function() {
+      expect(cidr.cidr.previous('1.2.3.0/29')).to.equal('1.2.2.248/29');
     });
-
-    /*
-ava('10.1.0.0/16 prev', test => {
-  test.deepEqual(cidr1010016.prev, new Subnetv4('10.0.0.0/16'));
-});
-
-ava('10.1.0.0/17 prev', test => {
-  test.deepEqual(cidr1010017.prev, new Subnetv4('10.0.128.0/17'));
-});
-
-ava('1.2.3.4/29 prev', test => {
-  test.deepEqual(cidr123429.prev, new Subnetv4('1.2.2.248/29'));
-});
-*/
   });
 
   describe('next', function() {
-    it('10.0.0.0/16 should result in 65536', function() {
-      expect(cidr.cidr.next('10.0.0.0/16')).to.equal(65536);
+    it('10.1.0.0/16 should result in 10.2.0.0/16', function() {
+      expect(cidr.cidr.next('10.1.0.0/16')).to.equal('10.2.0.0/16');
     });
 
-    it('10.0.0.0/17 should result in 32768', function() {
-      expect(cidr.cidr.next('10.0.0.0/17')).to.equal(32768);
+    it('10.1.0.0/17 should result in 10.1.128.0/17', function() {
+      expect(cidr.cidr.next('10.1.0.0/17')).to.equal('10.1.128.0/17');
     });
 
-    it('1.2.3.0/29 should result in 8', function() {
-      expect(cidr.cidr.next('1.2.3.0/29')).to.equal(8);
+    it('1.2.3.0/29 should result in 1.2.3.8/29', function() {
+      expect(cidr.cidr.next('1.2.3.0/29')).to.equal('1.2.3.8/29');
     });
-    /*
-ava('10.1.0.0/16 next', test => {
-  test.deepEqual(cidr1010016.next, new Subnetv4('10.2.0.0/16'));
-});
-
-ava('10.1.0.0/16 next next', test => {
-  test.deepEqual(cidr1010016.next.next, new Subnetv4('10.3.0.0/16'));
-});
-
-ava('10.1.0.0/17 next', test => {
-  test.deepEqual(cidr1010017.next, new Subnetv4('10.1.128.0/17'));
-});
-
-ava('1.2.3.4/29 next', test => {
-  test.deepEqual(cidr123429.next, new Subnetv4('1.2.3.8/29'));
-});
-
-*/
   });
 
   describe('subnets', function() {
-    it('10.0.0.0/16 should result in 65536', function() {
-      expect(cidr.cidr.subnets('10.0.0.0/16')).to.equal(65536);
+    it('10.0.0.0/16 /16', function() {
+      expect(cidr.cidr.subnets('10.0.0.0/16', 16)).to.eql(['10.0.0.0/16']);
     });
 
-    it('10.0.0.0/17 should result in 32768', function() {
-      expect(cidr.cidr.subnets('10.0.0.0/17')).to.equal(32768);
+    it('10.1.0.0/16 18 should result in four subnets', function() {
+      expect(cidr.cidr.subnets('10.1.0.0/16', 18)).to.eql([
+        '10.1.0.0/18',
+        '10.1.64.0/18',
+        '10.1.128.0/18',
+        '10.1.192.0/18'
+      ]);
+      expect(cidr.cidr.subnets('10.1.0.0/16', 18, 2)).to.eql([
+        '10.1.0.0/18',
+        '10.1.64.0/18'
+      ]);
+    });
+
+    it('10.1.0.0/16 /24', function() {
+      expect(cidr.cidr.subnets('10.0.0.0/16', 24).length).to.eql(256);
+      expect(cidr.cidr.subnets('10.0.0.0/16', 24, 2).length).to.eql(2);
+    });
+
+    it('10.1.0.0/16 /30', function() {
+      expect(cidr.cidr.subnets('10.0.0.0/16', 30).length).to.eql(16384);
+      expect(cidr.cidr.subnets('10.0.0.0/16', 30, 2).length).to.eql(2);
+    });
+
+    it('10.1.0.0/17 /18', function() {
+      expect(cidr.cidr.subnets('10.1.0.0/17', 18).length).to.eql(2);
+    });
+
+    it('10.1.0.0/17 /24', function() {
+      expect(cidr.cidr.subnets('10.1.0.0/17', 24).length).to.eql(128);
+    });
+
+    it('10.1.0.0/17 /30', function() {
+      expect(cidr.cidr.subnets('10.1.0.0/17', 30).length).to.eql(8192);
     });
 
     it('1.2.3.0/29 should result in 8', function() {
-      expect(cidr.cidr.subnets('1.2.3.0/29')).to.equal(8);
+      expect(cidr.cidr.subnets('1.2.3.0/29', 30)[0]).to.equal('1.2.3.0/30');
     });
-
-    /*
-      ava('10.1.0.0/16 /16', test => {
-        test.is(cidr1010016.subnets('/16').length, 1);
-      });
-      
-      ava('10.1.0.0/16 /18', test => {
-        test.is(cidr1010016.subnets('/18').length, 4);
-        test.is(cidr1010016.subnets('/18', 2).length, 2);
-      });
-      
-      ava('10.1.0.0/16 /24', test => {
-        test.is(cidr1010016.subnets('/24').length, 256);
-        test.is(cidr1010016.subnets('/24', 2).length, 2);
-      });
-      
-      ava('10.1.0.0/16 /30', test => {
-        test.is(cidr1010016.subnets('/30').length, 16384);
-      });
-      
-      ava('10.1.0.0/17 /18', test => {
-        test.is(cidr1010017.subnets('/18').length, 2);
-      });
-      
-      ava('10.1.0.0/17 /24', test => {
-        test.is(cidr1010017.subnets('/24').length, 128);
-        test.is(cidr1010017.subnets('/24', 2).length, 2);
-      });
-      
-      ava('10.1.0.0/17 /30', test => {
-        test.is(cidr1010017.subnets('/30').length, 8192);
-        test.is(cidr1010017.subnets('/30', 4).length, 4);
-      });
-      
-      ava('1.2.3.4/29 /30', test => {
-        test.is(cidr123429.subnets('/30')[0].asString, '1.2.3.4/30');
-      });
-    */
   });
 
   describe('includes', function() {
-    it('10.0.0.0/16 should result in 65536', function() {
-      expect(cidr.cidr.includes('10.0.0.0/16')).to.equal(65536);
-      expect(cidr.cidr.includes('10.0.0.0/16')).to.equal(65536);
+    it('10.0.0.0/16 10.0.120.1 true, 192.168.0.5 false', function() {
+      expect(cidr.cidr.includes('10.0.0.0/16', '10.0.120.1')).to.equal(true);
+      expect(cidr.cidr.includes('10.0.0.0/16', '192.168.0.5')).to.equal(false);
     });
 
-    it('10.0.0.0/17 should result in 32768', function() {
-      expect(cidr.cidr.includes('10.0.0.0/17')).to.equal(32768);
-      expect(cidr.cidr.includes('10.0.0.0/16')).to.equal(65536);
+    it('10.1.0.0/17 10.1.120.1 true, 192.168.0.5 false', function() {
+      expect(cidr.cidr.includes('10.1.0.0/17', '10.1.120.1')).to.equal(true);
+      expect(cidr.cidr.includes('10.1.0.0/17', '192.168.0.5')).to.equal(false);
     });
 
-    it('1.2.3.0/29 should result in 8', function() {
-      expect(cidr.cidr.includes('1.2.3.0/29')).to.equal(8);
-      expect(cidr.cidr.includes('10.0.0.0/16')).to.equal(65536);
+    it('1.2.3.4/32 1.2.3.4 true, 1.2.3.5 false', function() {
+      expect(cidr.cidr.includes('1.2.3.4/32', '1.2.3.4')).to.equal(true);
+      expect(cidr.cidr.includes('1.2.3.4/32', '1.2.3.5')).to.equal(false);
     });
   });
 
