@@ -118,6 +118,40 @@ describe('ip', function() {
     });
   });
 
+  describe('validate', function() {
+    it('1.2.3.4 should be null', function() {
+      expect(cidr.ip.validate('1.2.3.4')).to.equal(null);
+    });
+
+    it('1.2.3 should be false', function() {
+      expect(cidr.ip.validate('1.2.3')).to.equal(
+        'Invalid address: Not enough quads'
+      );
+    });
+
+    it('1.2.3. should be false', function() {
+      expect(cidr.ip.validate('1.2.3.')).to.equal('Invalid IP: Invalid quad');
+    });
+
+    it('1.2/3.4 should be false', function() {
+      expect(cidr.ip.validate('1.2/3.')).to.equal(
+        'Invalid IP: illegal character'
+      );
+    });
+
+    it('10.0.0.256 should be false', function() {
+      expect(cidr.ip.validate('10.0.0.256')).to.equal(
+        'Invalid IP: quad too large'
+      );
+    });
+
+    it('10 should be false', function() {
+      expect(cidr.ip.validate('10')).to.equal(
+        'Invalid address: Not enough quads'
+      );
+    });
+  });
+
   describe('commonCidr', function() {
     it('Common cidr for 10.0.0.0 and 10.0.0.1 should equal 10.0.0.0/31', function() {
       expect(cidr.ip.commonCidr(['10.0.0.0', '10.0.0.1'])).to.eql(
@@ -469,6 +503,73 @@ describe('cidr', function() {
           '10.205.122.0/26'
         ])
       ).to.eql('10.205.96.0/19');
+    });
+  });
+
+  describe('usable', function() {
+    it('1.2.3.4/29 should be 6', function() {
+      expect(cidr.cidr.usable('1.2.3.4/29')).to.eql([
+        '1.2.3.1',
+        '1.2.3.2',
+        '1.2.3.3',
+        '1.2.3.4',
+        '1.2.3.5',
+        '1.2.3.6'
+      ]);
+    });
+  });
+
+  describe('random', function() {
+    it('1.2.3.4/29 should be true', function() {
+      expect(
+        cidr.cidr.includes('1.2.3.4/29', cidr.cidr.random('1.2.3.4/29'))
+      ).to.equal(true);
+    });
+  });
+
+  describe('validate', function() {
+    it('1.2.3.4/29 should be false', function() {
+      expect(cidr.cidr.validate('1.2.3.4/29')).to.equal(
+        'Invalid: CIDR better expressed as 1.2.3.0/29'
+      );
+    });
+
+    it('1.2.3.0/29 should be null', function() {
+      expect(cidr.cidr.validate('1.2.3.0/29')).to.equal(null);
+    });
+
+    it('1.2.3.0/33 should be false', function() {
+      expect(cidr.cidr.validate('1.2.3.0/33')).to.equal(
+        'Invalid: mask cannot be more than 32'
+      );
+    });
+
+    it('1.2.3.0/-1 should be false', function() {
+      expect(cidr.cidr.validate('1.2.3.0/-1')).to.equal(
+        'Invalid: mask cannot be less than 0'
+      );
+    });
+
+    it('1.2.3.0/a should be false', function() {
+      expect(cidr.cidr.validate('1.2.3.0/a')).to.equal(
+        'Invalid: mask must be a positive integer'
+      );
+    });
+
+    it('10.0.0.1/16 should be false', function() {
+      expect(cidr.cidr.validate('10.0.0.1/16')).to.equal(
+        'Invalid: CIDR better expressed as 10.0.0.0/16'
+      );
+    });
+
+    it('10.256.0.0/8 should be false', function() {
+      expect(cidr.cidr.validate('10.256.0.0/8')).to.equal(
+        'Invalid IP: quad too large'
+      );
+    });
+
+    it('10.0.0.0/16 should be null', function() {
+      expect(cidr.cidr.validate('10.0.0.0/16')).to.equal(null);
     });
   });
 });

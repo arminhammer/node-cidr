@@ -1,5 +1,7 @@
 // Common
 
+const invalidChars = /^.*?(?=[\^#%&$\*:<>\?\/\{\|\}[a-zA-Z]).*$/;
+
 const intCommonCidr = (ips: number[]): string => {
   const ipInt = ips.sort();
   let mask = 0;
@@ -30,7 +32,7 @@ const padLeft = (input: string, char: string, min: number): string => {
 
 // IP Address methods
 
-const toInt = (ipAddress: string) =>
+const toInt = (ipAddress: string): number =>
   ipAddress
     .split('.')
     .reduce(
@@ -68,7 +70,7 @@ const toOctets = (input: string | number): number[] => {
  * Returns the reverse lookup hostname for the address.
  * @returns {string}
  */
-const reverse = (ip: string | number) => {
+const reverse = (ip: string | number): string => {
   if (typeof ip === 'number') {
     ip = toString(ip);
   }
@@ -114,14 +116,25 @@ const next = (ip: string): string => toString(toInt(ip) + 1);
  */
 const previous = (ip: string): string => toString(toInt(ip) - 1);
 
-const toCidr = (ip: string | number) => {
+const toCidr = (ip: string | number): string => {
   if (typeof ip === 'number') {
     ip = toString(ip);
   }
   return `${ip}/32`;
 };
 
-const validateIp = () => {};
+const validateIp = (ip: string): string | null => {
+  if (invalidChars.test(ip)) return 'Invalid IP: illegal character';
+
+  const octets = ip.split('.');
+  if (octets.length !== 4) return 'Invalid address: Not enough quads';
+  for (let i = 0; i < octets.length; i++) {
+    const int = parseInt(octets[i]);
+    if (isNaN(int)) return 'Invalid IP: Invalid quad';
+    if (int > 255) return 'Invalid IP: quad too large';
+  }
+  return null;
+};
 
 export const ip = {
   toInt,
@@ -150,29 +163,16 @@ const toIntRange = (cidr: string): number[] => [
 
 const toRange = (cidr: string): string[] => [min(cidr), max(cidr)];
 
-const cidrCommonCidr = (cidrs: string[]) => {
+const cidrCommonCidr = (cidrs: string[]): string => {
   const ipMap = cidrs.map(x => toIntRange(x));
   const ipInt = [].concat.apply([], ipMap).sort();
   return intCommonCidr(ipInt);
 };
 
-const netmask = (cidr: string) => toString(2 ** 32 - 2 ** (32 - mask(cidr)));
+const netmask = (cidr: string): string =>
+  toString(2 ** 32 - 2 ** (32 - mask(cidr)));
 
-const gateway = (cidr: string) => {
-  console.log('range', toRange(cidr));
-  let mask = this.wildcardmask.octets;
-  let result = [];
-  for (let i = 0; i < this._ip.octets.length; i++) {
-    if (this.wildcardmask.octets[i] > this._ip.octets[i]) {
-      result[i] = 0;
-    } else {
-      result[i] = this._ip.octets[i];
-    }
-  }
-  return `${result[0]}.${result[1]}.${result[2]}.${result[3]}`;
-};
-
-const broadcast = (cidr: string) => max(cidr);
+const broadcast = (cidr: string): string => max(cidr);
 
 const min = (cidr: string): string => {
   const addr = address(cidr);
@@ -181,19 +181,27 @@ const min = (cidr: string): string => {
   return div > 0 ? toString(addrInt - div) : addr;
 };
 
-const max = (cidr: string) => {
+const max = (cidr: string): string => {
   let initial: number = toInt(min(cidr));
   let add = 2 ** (32 - mask(cidr));
   return toString(initial + add - 1);
 };
 
-const count = (cidr: string) => 2 ** (32 - mask(cidr));
+const count = (cidr: string): number => 2 ** (32 - mask(cidr));
 
-const usable = (cidr: string) => {};
+const usable = (cidr: string): string[] => {
+  const result = [];
+  let start = toInt(min(cidr)) + 1;
+  const stop = toInt(max(cidr));
+  while (start < stop) {
+    result.push(toString(start));
+    start += 1;
+  }
+  return result;
+};
 
-const range = (cidr: string) => {};
-
-const wildcardmask = (cidr: string) => toString(2 ** (32 - mask(cidr)) - 1);
+const wildcardmask = (cidr: string): string =>
+  toString(2 ** (32 - mask(cidr)) - 1);
 
 const subnets = (cidr: string, subMask: number, limit: number): string[] => {
   const mainMask: number = mask(cidr);
@@ -218,7 +226,7 @@ const subnets = (cidr: string, subMask: number, limit: number): string[] => {
   return subnets;
 };
 
-const ips = (cidr: string) => {
+const ips = (cidr: string): string[] => {
   let ips: string[] = [];
   const maxIp = toInt(max(cidr));
   let current: string = address(cidr);
@@ -234,15 +242,30 @@ const includes = (cidr: string, ip: string): boolean => {
   return ipInt >= toInt(min(cidr)) && ipInt <= toInt(max(cidr));
 };
 
-const nextCidr = (cidr: string) =>
+const nextCidr = (cidr: string): string =>
   `${toString(toInt(address(cidr)) + 2 ** (32 - mask(cidr)))}/${mask(cidr)}`;
 
-const previousCidr = (cidr: string) =>
+const previousCidr = (cidr: string): string =>
   `${toString(toInt(address(cidr)) - 2 ** (32 - mask(cidr)))}/${mask(cidr)}`;
 
-const random = (cidr: string) => {};
+const random = (cidr: string): string => {
+  const [minIp, maxIp] = toIntRange(cidr);
+  return toString(Math.floor(Math.random() * (maxIp - minIp + 1)) + minIp);
+};
 
-const validateCidr = (cidr: string) => {};
+const validateCidr = (cidr: string): string | null => {
+  const ip = address(cidr);
+  const ipValid = validateIp(ip);
+  if (ipValid !== null) return ipValid;
+  const cidrMask = mask(cidr);
+  console.log('cidrMask:', cidrMask, cidr);
+  if (cidrMask > 32) return 'Invalid: mask cannot be more than 32';
+  if (cidrMask < 0) return 'Invalid: mask cannot be less than 0';
+  if (isNaN(cidrMask)) return 'Invalid: mask must be a positive integer';
+  if (ip !== min(cidr))
+    return `Invalid: CIDR better expressed as ${min(cidr)}/${mask(cidr)}`;
+  return null;
+};
 
 export const cidr = {
   toRange,
@@ -253,9 +276,7 @@ export const cidr = {
   min,
   count,
   netmask,
-  range,
   wildcardmask,
-  gateway,
   broadcast,
   subnets,
   ips,
