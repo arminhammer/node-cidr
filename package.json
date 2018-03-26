@@ -1,16 +1,13 @@
 {
   "name": "node-cidr",
   "version": "1.0.0",
-  "description":
-    "[![view on npm](http://img.shields.io/npm/v/example.svg)](https://www.npmjs.org/package/example)",
+  "description": "[![view on npm](http://img.shields.io/npm/v/example.svg)](https://www.npmjs.org/package/example)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test":
-      "./node_modules/.bin/nyc mocha --require ts-node/register --watch-extensions ts,tsx test/**/*.{ts,tsx}",
+    "test": "./node_modules/.bin/nyc mocha --require ts-node/register --watch-extensions ts,tsx test/**/*.{ts,tsx}",
     "build": "tsc",
-    "docs":
-      "typedoc --theme markdown --out docs --mode file --readme README.stub.md && mv docs/README.md . && rm -rf docs",
+    "docs": "typedoc --theme markdown --out docs --mode file --readme README.stub.md && mv docs/README.md . && rm -rf docs",
     "docts": "docts"
   },
   "keywords": [
@@ -33,13 +30,25 @@
     "nyc": "^11.6.0",
     "ts-node": "^5.0.1",
     "typedoc": "^0.11.1",
+    "typedoc-plugin-external-module-name": "^1.1.1",
     "typedoc-plugin-markdown": "^1.0.14"
   },
   "nyc": {
-    "include": ["src/**/*.ts", "src/**/*.tsx"],
-    "extension": [".ts", ".tsx"],
-    "require": ["ts-node/register"],
-    "reporter": ["text-summary", "html"],
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx"
+    ],
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "text-summary",
+      "html"
+    ],
     "sourceMap": true,
     "instrument": true
   },

@@ -1,7 +1,16 @@
 "use strict";
 // Common
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * pattern form invalid address characters
+ * @hidden
+ */
 const invalidChars = /^.*?(?=[\^#%&$\*:<>\?\/\{\|\}[a-zA-Z]).*$/;
+/**
+ * Find the lowest common cidr for an array of integer ip addresses
+ * @hidden
+ * @param ips
+ */
 const intCommonCidr = (ips) => {
     const ipInt = ips.sort();
     let mask = 0;
@@ -22,16 +31,28 @@ const intCommonCidr = (ips) => {
     }
     return `${toString(baseIp)}/${mask}`;
 };
+/**
+ * Pad left for binary string representation
+ * @hidden
+ */
 const padLeft = (input, char, min) => {
     while (input.length < min) {
         input = char + input;
     }
     return input;
 };
-// IP Address methods
+/**
+ * Returns the integer value of an ip address
+ * @param ipAddress
+ */
 const toInt = (ipAddress) => ipAddress
     .split('.')
     .reduce((p, c, i) => p + parseInt(c) * Math.pow(256, (3 - i)), 0);
+// IP Address methods
+var ip;
+(function (ip) {
+    toInt;
+})(ip = exports.ip || (exports.ip = {}));
 const toString = (ipInt) => {
     let remaining = ipInt;
     let address = [];
@@ -122,7 +143,7 @@ const validateIp = (ip) => {
     }
     return null;
 };
-exports.ip = {
+exports.ip1 = {
     toInt,
     toString,
     commonCidr: ipCommonCidr,
