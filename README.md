@@ -63,7 +63,7 @@ node-cidr is a Javascript library that makes it easy to manipulate IPs and Subne
 
 **●  invalidChars**:  *`RegExp`*  =  /^.*?(?=[\^#%&$\*:<>\?\/\{\|\}[a-zA-Z]).*$/
 
-*Defined in [index.ts:3](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L3)*
+*Defined in [index.ts:3](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L3)*
 
 
 
@@ -81,7 +81,7 @@ ___
 
 
 
-*Defined in [index.ts:155](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L155)*
+*Defined in [index.ts:155](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L155)*
 
 
 
@@ -111,7 +111,7 @@ ___
 
 
 
-*Defined in [index.ts:175](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L175)*
+*Defined in [index.ts:175](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L175)*
 
 
 
@@ -141,7 +141,7 @@ ___
 
 
 
-*Defined in [index.ts:166](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L166)*
+*Defined in [index.ts:166](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L166)*
 
 
 
@@ -171,7 +171,7 @@ ___
 
 
 
-*Defined in [index.ts:190](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L190)*
+*Defined in [index.ts:190](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L190)*
 
 
 
@@ -201,7 +201,7 @@ ___
 
 
 
-*Defined in [index.ts:240](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L240)*
+*Defined in [index.ts:240](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L240)*
 
 
 
@@ -232,7 +232,7 @@ ___
 
 
 
-*Defined in [index.ts:5](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L5)*
+*Defined in [index.ts:5](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L5)*
 
 
 
@@ -262,7 +262,7 @@ ___
 
 
 
-*Defined in [index.ts:57](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L57)*
+*Defined in [index.ts:57](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L57)*
 
 
 
@@ -292,7 +292,7 @@ ___
 
 
 
-*Defined in [index.ts:229](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L229)*
+*Defined in [index.ts:229](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L229)*
 
 
 
@@ -322,7 +322,7 @@ ___
 
 
 
-*Defined in [index.ts:157](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L157)*
+*Defined in [index.ts:157](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L157)*
 
 
 
@@ -352,7 +352,7 @@ ___
 
 
 
-*Defined in [index.ts:184](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L184)*
+*Defined in [index.ts:184](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L184)*
 
 
 
@@ -382,7 +382,7 @@ ___
 
 
 
-*Defined in [index.ts:177](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L177)*
+*Defined in [index.ts:177](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L177)*
 
 
 
@@ -412,7 +412,7 @@ ___
 
 
 
-*Defined in [index.ts:172](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L172)*
+*Defined in [index.ts:172](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L172)*
 
 
 
@@ -442,7 +442,7 @@ ___
 
 
 
-*Defined in [index.ts:111](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L111)*
+*Defined in [index.ts:111](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L111)*
 
 
 
@@ -477,7 +477,7 @@ ___
 
 
 
-*Defined in [index.ts:245](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L245)*
+*Defined in [index.ts:245](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L245)*
 
 
 
@@ -507,7 +507,7 @@ ___
 
 
 
-*Defined in [index.ts:26](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L26)*
+*Defined in [index.ts:26](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L26)*
 
 
 
@@ -539,7 +539,7 @@ ___
 
 
 
-*Defined in [index.ts:117](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L117)*
+*Defined in [index.ts:117](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L117)*
 
 
 
@@ -574,7 +574,7 @@ ___
 
 
 
-*Defined in [index.ts:248](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L248)*
+*Defined in [index.ts:248](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L248)*
 
 
 
@@ -604,7 +604,7 @@ ___
 
 
 
-*Defined in [index.ts:251](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L251)*
+*Defined in [index.ts:251](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L251)*
 
 
 
@@ -634,7 +634,7 @@ ___
 
 
 
-*Defined in [index.ts:73](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L73)*
+*Defined in [index.ts:73](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L73)*
 
 
 
@@ -669,7 +669,7 @@ ___
 
 
 
-*Defined in [index.ts:206](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L206)*
+*Defined in [index.ts:206](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L206)*
 
 
 
@@ -701,7 +701,7 @@ ___
 
 
 
-*Defined in [index.ts:84](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L84)*
+*Defined in [index.ts:84](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L84)*
 
 
 
@@ -736,7 +736,7 @@ ___
 
 
 
-*Defined in [index.ts:119](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L119)*
+*Defined in [index.ts:119](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L119)*
 
 
 
@@ -766,7 +766,7 @@ ___
 
 
 
-*Defined in [index.ts:97](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L97)*
+*Defined in [index.ts:97](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L97)*
 
 
 
@@ -801,7 +801,7 @@ ___
 
 
 
-*Defined in [index.ts:35](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L35)*
+*Defined in [index.ts:35](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L35)*
 
 
 
@@ -831,7 +831,7 @@ ___
 
 
 
-*Defined in [index.ts:159](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L159)*
+*Defined in [index.ts:159](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L159)*
 
 
 
@@ -861,7 +861,7 @@ ___
 
 
 
-*Defined in [index.ts:62](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L62)*
+*Defined in [index.ts:62](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L62)*
 
 
 
@@ -891,7 +891,7 @@ ___
 
 
 
-*Defined in [index.ts:164](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L164)*
+*Defined in [index.ts:164](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L164)*
 
 
 
@@ -921,7 +921,7 @@ ___
 
 
 
-*Defined in [index.ts:43](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L43)*
+*Defined in [index.ts:43](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L43)*
 
 
 
@@ -951,7 +951,7 @@ ___
 
 
 
-*Defined in [index.ts:192](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L192)*
+*Defined in [index.ts:192](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L192)*
 
 
 
@@ -981,7 +981,7 @@ ___
 
 
 
-*Defined in [index.ts:256](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L256)*
+*Defined in [index.ts:256](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L256)*
 
 
 
@@ -1011,7 +1011,7 @@ ___
 
 
 
-*Defined in [index.ts:126](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L126)*
+*Defined in [index.ts:126](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L126)*
 
 
 
@@ -1041,7 +1041,7 @@ ___
 
 
 
-*Defined in [index.ts:203](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L203)*
+*Defined in [index.ts:203](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L203)*
 
 
 
@@ -1075,7 +1075,7 @@ ___
 
 **●  address**:  *[address]()* 
 
-*Defined in [index.ts:287](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L287)*
+*Defined in [index.ts:287](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L287)*
 
 
 
@@ -1088,7 +1088,7 @@ ___
 
 **●  broadcast**:  *[broadcast]()* 
 
-*Defined in [index.ts:280](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L280)*
+*Defined in [index.ts:280](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L280)*
 
 
 
@@ -1101,7 +1101,7 @@ ___
 
 **●  commonCidr**:  *[cidrCommonCidr]()*  =  cidrCommonCidr
 
-*Defined in [index.ts:274](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L274)*
+*Defined in [index.ts:274](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L274)*
 
 
 
@@ -1114,7 +1114,7 @@ ___
 
 **●  count**:  *[count]()* 
 
-*Defined in [index.ts:277](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L277)*
+*Defined in [index.ts:277](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L277)*
 
 
 
@@ -1127,7 +1127,7 @@ ___
 
 **●  includes**:  *[includes]()* 
 
-*Defined in [index.ts:283](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L283)*
+*Defined in [index.ts:283](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L283)*
 
 
 
@@ -1140,7 +1140,7 @@ ___
 
 **●  ips**:  *[ips]()* 
 
-*Defined in [index.ts:282](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L282)*
+*Defined in [index.ts:282](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L282)*
 
 
 
@@ -1153,7 +1153,7 @@ ___
 
 **●  mask**:  *[mask]()* 
 
-*Defined in [index.ts:288](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L288)*
+*Defined in [index.ts:288](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L288)*
 
 
 
@@ -1166,7 +1166,7 @@ ___
 
 **●  max**:  *[max]()* 
 
-*Defined in [index.ts:275](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L275)*
+*Defined in [index.ts:275](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L275)*
 
 
 
@@ -1179,7 +1179,7 @@ ___
 
 **●  min**:  *[min]()* 
 
-*Defined in [index.ts:276](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L276)*
+*Defined in [index.ts:276](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L276)*
 
 
 
@@ -1192,7 +1192,7 @@ ___
 
 **●  netmask**:  *[netmask]()* 
 
-*Defined in [index.ts:278](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L278)*
+*Defined in [index.ts:278](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L278)*
 
 
 
@@ -1205,7 +1205,7 @@ ___
 
 **●  next**:  *[nextCidr]()*  =  nextCidr
 
-*Defined in [index.ts:285](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L285)*
+*Defined in [index.ts:285](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L285)*
 
 
 
@@ -1218,7 +1218,7 @@ ___
 
 **●  previous**:  *[previousCidr]()*  =  previousCidr
 
-*Defined in [index.ts:286](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L286)*
+*Defined in [index.ts:286](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L286)*
 
 
 
@@ -1231,7 +1231,7 @@ ___
 
 **●  random**:  *[random]()* 
 
-*Defined in [index.ts:284](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L284)*
+*Defined in [index.ts:284](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L284)*
 
 
 
@@ -1244,7 +1244,7 @@ ___
 
 **●  subnets**:  *[subnets]()* 
 
-*Defined in [index.ts:281](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L281)*
+*Defined in [index.ts:281](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L281)*
 
 
 
@@ -1257,7 +1257,7 @@ ___
 
 **●  toIntRange**:  *[toIntRange]()* 
 
-*Defined in [index.ts:273](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L273)*
+*Defined in [index.ts:273](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L273)*
 
 
 
@@ -1270,7 +1270,7 @@ ___
 
 **●  toRange**:  *[toRange]()* 
 
-*Defined in [index.ts:271](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L271)*
+*Defined in [index.ts:271](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L271)*
 
 
 
@@ -1283,7 +1283,7 @@ ___
 
 **●  usable**:  *[usable]()* 
 
-*Defined in [index.ts:272](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L272)*
+*Defined in [index.ts:272](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L272)*
 
 
 
@@ -1296,7 +1296,7 @@ ___
 
 **●  validate**:  *[validateCidr]()*  =  validateCidr
 
-*Defined in [index.ts:289](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L289)*
+*Defined in [index.ts:289](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L289)*
 
 
 
@@ -1309,7 +1309,7 @@ ___
 
 **●  wildcardmask**:  *[wildcardmask]()* 
 
-*Defined in [index.ts:279](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L279)*
+*Defined in [index.ts:279](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L279)*
 
 
 
@@ -1328,7 +1328,7 @@ ___
 
 **●  commonCidr**:  *[ipCommonCidr]()*  =  ipCommonCidr
 
-*Defined in [index.ts:142](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L142)*
+*Defined in [index.ts:142](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L142)*
 
 
 
@@ -1341,7 +1341,7 @@ ___
 
 **●  next**:  *[next]()* 
 
-*Defined in [index.ts:148](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L148)*
+*Defined in [index.ts:148](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L148)*
 
 
 
@@ -1354,7 +1354,7 @@ ___
 
 **●  previous**:  *[previous]()* 
 
-*Defined in [index.ts:147](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L147)*
+*Defined in [index.ts:147](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L147)*
 
 
 
@@ -1367,7 +1367,7 @@ ___
 
 **●  reverse**:  *[reverse]()* 
 
-*Defined in [index.ts:146](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L146)*
+*Defined in [index.ts:146](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L146)*
 
 
 
@@ -1380,7 +1380,7 @@ ___
 
 **●  toBinary**:  *[toBinary]()* 
 
-*Defined in [index.ts:145](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L145)*
+*Defined in [index.ts:145](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L145)*
 
 
 
@@ -1393,7 +1393,7 @@ ___
 
 **●  toCidr**:  *[toCidr]()* 
 
-*Defined in [index.ts:149](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L149)*
+*Defined in [index.ts:149](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L149)*
 
 
 
@@ -1406,7 +1406,7 @@ ___
 
 **●  toHex**:  *[toHex]()* 
 
-*Defined in [index.ts:143](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L143)*
+*Defined in [index.ts:143](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L143)*
 
 
 
@@ -1419,7 +1419,7 @@ ___
 
 **●  toInt**:  *[toInt]()* 
 
-*Defined in [index.ts:140](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L140)*
+*Defined in [index.ts:140](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L140)*
 
 
 
@@ -1432,7 +1432,7 @@ ___
 
 **●  toOctets**:  *[toOctets]()* 
 
-*Defined in [index.ts:144](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L144)*
+*Defined in [index.ts:144](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L144)*
 
 
 
@@ -1445,7 +1445,7 @@ ___
 
 **●  toString**:  *[toString]()* 
 
-*Defined in [index.ts:141](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L141)*
+*Defined in [index.ts:141](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L141)*
 
 
 
@@ -1458,7 +1458,7 @@ ___
 
 **●  validate**:  *[validateIp]()*  =  validateIp
 
-*Defined in [index.ts:150](https://github.com/arminhammer/node-cidr/blob/fae98da/src/index.ts#L150)*
+*Defined in [index.ts:150](https://github.com/arminhammer/node-cidr/blob/23f2044/src/index.ts#L150)*
 
 
 

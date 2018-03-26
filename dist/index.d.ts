@@ -1,6 +1,4 @@
-export declare namespace ip {
-}
-export declare const ip1: {
+export declare const ip: {
     toInt: (ipAddress: string) => number;
     toString: (ipInt: number) => string;
     commonCidr: (ips: string[]) => string;
