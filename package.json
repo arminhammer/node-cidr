@@ -62,6 +62,5 @@
   "bugs": {
     "url": "https://github.com/arminhammer/node-cidr/issues"
   },
-  "homepage": "https://github.com/arminhammer/node-cidr#readme",
-  "typings": "src/index.ts"
+  "homepage": "https://github.com/arminhammer/node-cidr#readme"
 }
